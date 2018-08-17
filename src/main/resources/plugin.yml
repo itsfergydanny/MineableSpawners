@@ -1,0 +1,9 @@
+name: MineableSpawners
+version: ${project.version}
+main: net.momentonetwork.MineableSpawners
+authors: [fergydanny]
+description: A simplistic silk spawner plugin
+website: https://momentonetwork.net
+api-version: 1.13
+commands:
+  spawner:
