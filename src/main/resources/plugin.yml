@@ -7,3 +7,4 @@ website: https://momentonetwork.net
 api-version: 1.13
 commands:
   spawner:
+  spawnergive:
