@@ -7,6 +7,8 @@ Then once you place spawners, it checks for the lore and updates to that type.
 
 Checks for full inventories and cancels the block break if you are not using silk touch to prevent loss.
 
-Also if you do /spawner (type) for example /spawner cow while looking at a spawner and having the permission "mineablespawners.spawner", it will update the spawner type.
+Command | permission | description
+- /spawner (type) | mineablespawners.spawner | Change the spawner you are looking at's type.
+- /spawnergive (name) (type) (amount) | mineablespawners.give | Give a user a certain amount of spawners of any type.
 
 Download link: https://www.dropbox.com/s/3xd29vew5u76tio/MineableSpawners.jar?dl=0
