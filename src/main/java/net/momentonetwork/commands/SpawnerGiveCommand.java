@@ -8,6 +8,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 
@@ -22,8 +23,10 @@ public class SpawnerGiveCommand implements CommandExecutor {
                 int amount = Integer.valueOf(args[2]);
                 if (target.getInventory().firstEmpty() != -1) {
                     ItemStack item = new ItemStack(Material.SPAWNER);
+                    ItemMeta meta = item.getItemMeta();
                     item.setAmount(amount);
-                    item.setLore(Collections.singletonList(ChatColor.YELLOW + "type: " + ChatColor.GRAY + type));
+                    meta.setLore(Collections.singletonList(ChatColor.YELLOW + "type: " + ChatColor.GRAY + type));
+                    item.setItemMeta(meta);
                     target.getInventory().addItem(item);
                     sender.sendMessage(ChatColor.GREEN + "Gave " + target.getDisplayName() + " " + amount + "x " + type + " spawners!");
                     target.sendMessage(ChatColor.GREEN + "Received " + amount + "x " + type + " spawners!");
