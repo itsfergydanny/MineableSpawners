@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
@@ -23,8 +24,9 @@ public class SpawnerPlaceListener implements Listener {
 
         if (material == Material.SPAWNER) {
             ItemStack placed = e.getItemInHand();
+            ItemMeta meta = placed.getItemMeta();
             try {
-                EntityType entity = EntityType.valueOf(placed.getLore().toString().split(": §7")[1].split("]")[0].toUpperCase());
+                EntityType entity = EntityType.valueOf(meta.getLore().toString().split(": §7")[1].split("]")[0].toUpperCase());
                 CreatureSpawner spawner = (CreatureSpawner) block.getState();
                 spawner.setSpawnedType(entity);
                 spawner.update();
