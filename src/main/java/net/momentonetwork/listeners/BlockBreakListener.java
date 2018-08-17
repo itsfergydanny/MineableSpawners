@@ -7,6 +7,7 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -15,14 +16,14 @@ import java.util.Collections;
 
 public class BlockBreakListener implements Listener {
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.MONITOR)
     public void onSpawnerMine(BlockBreakEvent e) {
 
         Player player = e.getPlayer();
         Block block = e.getBlock();
         Material material = block.getType();
 
-        if (material == Material.SPAWNER) {
+        if (material == Material.SPAWNER && !e.isCancelled()) {
 
             CreatureSpawner spawner = (CreatureSpawner) block.getState();
 
