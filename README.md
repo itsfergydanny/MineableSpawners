@@ -7,6 +7,8 @@ Then once you place spawners, it checks for the lore and updates to that type.
 
 Checks for full inventories and cancels the block break if you are not using silk touch to prevent loss.
 
+Permission to mine spawners: mineablespawners.break
+
 Command | permission | description
 - /spawner (type) | mineablespawners.spawner | Change the spawner you are looking at's type.
 - /spawnergive (name) (type) (amount) | mineablespawners.give | Give a user a certain amount of spawners of any type.
