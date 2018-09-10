@@ -29,7 +29,7 @@ public class BlockBreakListener implements Listener {
             CreatureSpawner spawner = (CreatureSpawner) block.getState();
 
             if(player.hasPermission("mineablespawners.break")) {
-                if (player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
+                if (player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission("mineablespawners.nosilk")) {
                     // Cancel exp drop
                     e.setExpToDrop(0);
                     // Bring block straight to inv
