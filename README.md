@@ -7,7 +7,7 @@ Then once you place spawners, it checks for the lore and updates to that type.
 
 Checks for full inventories and cancels the block break if you are not using silk touch to prevent loss.
 
-Permission to mine spawners: mineablespawners.break
+Permission to mine spawners: mineablespawners.break (give the user mineablespawners.nosilk to let them break them without silk touch)
 
 Command | permission | description
 - /spawner (type) | mineablespawners.spawner | Change the spawner you are looking at's type.
