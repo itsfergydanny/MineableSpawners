@@ -1,9 +1,11 @@
 package net.momentonetwork.listeners;
 
+import net.momentonetwork.MineableSpawners;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +18,16 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Collections;
 
 public class BlockBreakListener implements Listener {
+    // Make a class variable plugin with main class instance
+    private MineableSpawners plugin;
+    // Class config variable
+    private FileConfiguration config;
+
+    // Constructor
+    public BlockBreakListener(MineableSpawners plugin) {
+        this.plugin = plugin;
+        this.config = this.plugin.getConfigInstance();
+    }
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onSpawnerMine(BlockBreakEvent e) {
@@ -28,8 +40,8 @@ public class BlockBreakListener implements Listener {
 
             CreatureSpawner spawner = (CreatureSpawner) block.getState();
 
-            if(player.hasPermission("mineablespawners.break")) {
-                if (player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission("mineablespawners.nosilk")) {
+            if(player.hasPermission("mineablespawners.break") || !config.getBoolean("require_permission.spawner_break")) {
+                if (player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH) || player.hasPermission("mineablespawners.nosilk") || !config.getBoolean("require_permission.no_silk")) {
                     // Cancel exp drop
                     e.setExpToDrop(0);
                     // Bring block straight to inv
