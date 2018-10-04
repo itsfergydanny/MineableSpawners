@@ -1,16 +1,20 @@
-# MineableSpawners
-Simple silkspawners like plugin for 1.13 since its not updated yet.
+#MineableSpawners
 
-Basically when you mine a spawner with a silk touch pickaxe, you get that spawner in your inventory with a lore specifying which spawner type it is.
+This plugin allows players to mine spawners with silk touch (or not, see description) and have them go to their inventory so that they can trade or place them. This system uses the item lore to keep track of the spawner type.
 
-Then once you place spawners, it checks for the lore and updates to that type.
+Make sure to check the configuration if you want to disable the permission checks for certain features.
 
-Checks for full inventories and cancels the block break if you are not using silk touch to prevent loss.
+Current features:
+- Define if a user needs silk touch or not to break and drop spawners.
+- Change spawner type by looking at it and using /spawner (mob).
+- Give spawners by using /spawnergive (player) (mob) (amount).
+- Enable/Disable changing spawner types with spawn eggs.
 
-Permission to mine spawners: mineablespawners.break (give the user mineablespawners.nosilk to let them break them without silk touch)
-
-Command | permission | description
-- /spawner (type) | mineablespawners.spawner | Change the spawner you are looking at's type.
-- /spawnergive (name) (type) (amount) | mineablespawners.give | Give a user a certain amount of spawners of any type.
+Permissions:
+- Break a spawner with silk touch: mineablespawners.break
+- Break a spawner without silk touch: mineablespawners.break & mineablespawners.nosilk
+- Access to /spawner: mineablespawners.spawner
+- Access to /spawnergive: mineablespawners.give
+- Ability to change spawners with spawn eggs: mineablespawners.eggchange
 
 Download link: https://www.spigotmc.org/resources/mineablespawners.59921/
