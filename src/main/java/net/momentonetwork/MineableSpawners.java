@@ -3,6 +3,7 @@ package net.momentonetwork;
 import net.momentonetwork.commands.SpawnerCommand;
 import net.momentonetwork.commands.SpawnerGiveCommand;
 import net.momentonetwork.listeners.BlockBreakListener;
+import net.momentonetwork.listeners.EggChangeListener;
 import net.momentonetwork.listeners.SpawnerPlaceListener;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,6 +28,7 @@ public final class MineableSpawners extends JavaPlugin {
         // Register Listeners
         getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
         getServer().getPluginManager().registerEvents(new SpawnerPlaceListener(), this);
+        getServer().getPluginManager().registerEvents(new EggChangeListener(this), this);
 
     }
 

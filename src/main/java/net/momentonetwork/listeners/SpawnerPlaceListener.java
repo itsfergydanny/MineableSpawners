@@ -11,8 +11,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.List;
-
 public class SpawnerPlaceListener implements Listener {
 
     @EventHandler
