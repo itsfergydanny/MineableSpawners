@@ -34,4 +34,4 @@ require_permission:
   egg_change: true
 
 # Don't change this
-version: 1.3.3
+version: 1.4
