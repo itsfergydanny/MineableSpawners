@@ -13,7 +13,8 @@ Current features:
 Permissions:
 - Break a spawner with silk touch: mineablespawners.break
 - Break a spawner without silk touch: mineablespawners.break & mineablespawners.nosilk
-- Access to /spawner: mineablespawners.spawner
+- Access to /spawner (all mobs): mineablespawners.spawner
+- Access to /spawner (specific mobs only, do not give the above permission): mineablespawners.spawner.<mob name>, for example mineablespawners.spawner.chicken
 - Access to /spawnergive: mineablespawners.give
 - Ability to change spawners with spawn eggs: mineablespawners.eggchange
 
