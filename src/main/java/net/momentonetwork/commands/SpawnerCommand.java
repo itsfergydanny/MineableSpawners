@@ -27,8 +27,8 @@ public class SpawnerCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
-            if (sender.hasPermission("mineablespawners.spawner") || !config.getBoolean("require_permission.spawner_command")) {
                 if (args.length == 1) {
+                    if (sender.hasPermission("mineablespawners.spawner") || !config.getBoolean("require_permission.spawner_command") || sender.hasPermission("mineablespawners.spawner." + args[0])) {
                     Block target = ((Player) sender).getTargetBlock(null, 5);
                     if (target.getState().getBlock().getType() == Material.SPAWNER) {
                         try {
@@ -41,13 +41,12 @@ public class SpawnerCommand implements CommandExecutor {
                             sender.sendMessage(ChatColor.RED + "Sorry, that's not a valid mob type.");
                         }
                     }
-
+                    } else {
+                        sender.sendMessage(ChatColor.RED + "Sorry, you do not have permission to do this!");
+                    }
                 } else {
                     sender.sendMessage(ChatColor.RED + "Please enter a type. For example: /spawner cow");
                 }
-            } else {
-                sender.sendMessage(ChatColor.RED + "Sorry, you do not have permission to do this!");
-            }
         } else {
             System.out.println("Only players can run this command!");
         }
