@@ -40,16 +40,15 @@ public class SpawnerGiveCommand implements CommandExecutor {
                     meta.setLore(Collections.singletonList(ChatColor.YELLOW + "type: " + ChatColor.GRAY + type));
                     item.setItemMeta(meta);
                     target.getInventory().addItem(item);
-                    sender.sendMessage(ChatColor.GREEN + "Gave " + target.getDisplayName() + " " + amount + "x " + type + " spawners!");
+                    sender.sendMessage(ChatColor.GREEN + "Gave " + target.getDisplayName() + ChatColor.RESET + ChatColor.GREEN + " " + amount + "x " + type + " spawners!");
                     target.sendMessage(ChatColor.GREEN + "Received " + amount + "x " + type + " spawners!");
                 } else {
-                    sender.sendMessage(ChatColor.RED + "Player needs to clear up some inventory space before receiving a spawner!");
+                    sender.sendMessage(ChatColor.RED + "The player " + target.getDisplayName() + ChatColor.RED + " doesn't have enough inventory space!");
                 }
             } else {
-                sender.sendMessage(ChatColor.RED + "Invalid format, please use: /spawnergive (name) (type) (amount).");
-            }
+                sender.sendMessage(ChatColor.RED + "Invalid format, please use: /spawnergive <player> <spawner type> <# of spawners>");
         } else {
-            sender.sendMessage(ChatColor.RED + "Sorry, you do not have permission to do this!");
+            sender.sendMessage(ChatColor.RED + "Sorry, you don't have permission to do this!");
         }
         return false;
     }
