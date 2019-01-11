@@ -6,5 +6,7 @@ description: A simplistic silk spawner plugin
 website: https://momentonetwork.net
 api-version: 1.13
 commands:
-  spawner: Change a spawner''s type.
-  spawnergive: Give a player a spawner.
+  spawner:
+    description: Change a spawners type. Usage /spawner (mob)
+  spawnergive:
+    description: Give a user a spawner. Usage /spawnergive (user) (mob) (amount)

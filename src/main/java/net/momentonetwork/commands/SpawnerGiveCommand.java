@@ -47,6 +47,7 @@ public class SpawnerGiveCommand implements CommandExecutor {
                 }
             } else {
                 sender.sendMessage(ChatColor.RED + "Invalid format, please use: /spawnergive <player> <spawner type> <# of spawners>");
+            }
         } else {
             sender.sendMessage(ChatColor.RED + "Sorry, you don't have permission to do this!");
         }
