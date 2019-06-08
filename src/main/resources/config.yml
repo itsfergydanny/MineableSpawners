@@ -1,37 +1,74 @@
-#             _                  _     _
-#            (_)                | |   | |
-#   _ __ ___  _ _ __   ___  __ _| |__ | | ___
-#  | '_ ` _ \| | '_ \ / _ \/ _` | '_ \| |/ _ \
-#  | | | | | | | | | |  __/ (_| | |_) | |  __/
-#  |_| |_| |_|_|_| |_|\___|\__,_|_.__/|_|\___|
-#   ___ _ __   __ ___      ___ __   ___ _ __ ___
-#  / __| '_ \ / _` \ \ /\ / / '_ \ / _ \ '__/ __|
-#  \__ \ |_) | (_| |\ V  V /| | | |  __/ |  \__ \
-#  |___/ .__/ \__,_| \_/\_/ |_| |_|\___|_|  |___/
-#      | |
-#      |_|
+#
+# Plugin by fergydanny (dnyferguson), check out my other resources at https://www.spigotmc.org/resources/authors/fergydanny.25236/
+# You can find the mob types at https://pastebin.com/fmtVpCeq (1.13) or
+# https://hub.spigotmc.org/javadocs/spigot/org/bukkit/entity/EntityType.html (1.14+)
 #
 
-require_permission:
-  # Require the permission `mineablespawners.break` to break a spawner?
-  # Default: true
-  spawner_break: true
 
-  # Require `mineablespawners.nosilk` to mine a spawner with a pick that doesn't have Silk Touch?
-  # Default: true
-  no_silk: true
+#
+# GLOBAL
+#
 
-  # Require the permission `mineablespawners.spawner` to use the /spawner command?
-  # Default: true
-  spawner_command: true
+# Set the item name. This is used by the plugin to know which spawner to place down. Please only change the colors
+# and or remove the brackets, otherwise it will not work as intended.
+item-name: '&8[&e%mob% &7Spawner&8]'
 
-  # Require the permission `mineablespawners.give` to use the /spawnergive command?
-  # Default: true
-  spawnergive_command: true
+# Prevent players from renaming spawners in anvils? This prevents them from changing their types!
+prevent-anvil: true
+prevent-anvil-message: '&cSorry, you can''t rename spawners!'
 
-  # Require the permission `mineablespawners.eggchange` to use spawn eggs to change spawner types
-  # Default: true
-  egg_change: true
+#
+# SPAWNER MINING
+#
 
-# Don't change this
-version: 1.4
+mining:
+  # Require the permission "mineablespawners.break" to mine a spawner
+  require-permission: true
+
+  # The message if a user doesn't have the permission for the above
+  no-permission: '&cYou don''t have permission to mine this spawner!'
+
+  # Does the player need silk touch? If true, you can give the permission "mineablespawners.nosilk" to bypass this check.
+  require-silktouch: true
+
+  # Message if a user doesn't have silk
+  no-silktouch: '&cYou need silk touch to mine this spawner!'
+
+  # Cancel exp drop? Spawners usually drop exp when broken, it is recommended to keep this false.
+  drop-exp: false
+
+  # Should the spawner instantly appear in their inventory instead of being dropped on the ground?
+  drop-in-inventory: true
+
+  # Message if inventory is full and drop is cancelled
+  inventory-full: '&cYour inventory is full! Please make space before mining this spawner.'
+
+  # Should the spawner simply break (like vanilla) if a player doesn't meet one of the requirements?
+  still-break: false
+
+  # Message when it breaks because they dont meet a requirement
+  still-break-message: '&cYou did not meet all the criterias to drop the spawner.'
+
+
+#
+# SPAWN EGGS
+#
+
+eggs:
+  # Require the permission "mineablespawners.eggchange" to change a spawner's type using eggs.
+  require-permission: true
+
+  # If the above is true and the player does not have permission, send them this message:
+  no-permission: '&cChanging spawner types with spawn eggs is disabled on this server.'
+
+  # Require individual mob perm? format: "mineablespawners.eggchange.<type>", for example "mineablespawners.eggchange.cow"
+  require-individual-permission: true
+
+  # No perm message for the above
+  no-individual-permission: '&cYou don''t have permission to change to that mob type!'
+
+  # Set the success message, placeholders available: %from% (initial mob type), %to% (new mob type)
+  success: '&aYou have successfully changed the spawner from %from% to %to%!'
+
+  # Set the message for when a player attempts to set a spawner to a type it already is
+  already-this-type: '&cThe spawner is already of that type!'
