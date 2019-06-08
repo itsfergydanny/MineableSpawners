@@ -1,6 +1,6 @@
-package net.momentonetwork.commands;
+package com.dnyferguson.mineablespawners.commands;
 
-import net.momentonetwork.MineableSpawners;
+import com.dnyferguson.mineablespawners.MineableSpawners;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,15 +15,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Collections;
 
 public class SpawnerGiveCommand implements CommandExecutor {
-    // Make a class variable plugin with main class instance
-    private MineableSpawners plugin;
-    // Class config variable
+
     private FileConfiguration config;
 
-    // Constructor
     public SpawnerGiveCommand(MineableSpawners plugin) {
-        this.plugin = plugin;
-        this.config = this.plugin.getConfigInstance();
+        this.config = plugin.getConfig();
     }
 
     @Override
