@@ -21,7 +21,7 @@ public class AnvilRenameListener implements Listener {
     noAnvilMessage = config.getString("prevent-anvil-message");
   }
 
-  @EventHandler
+  @EventHandler (ignoreCancelled = true)
   public void onAnvilRename(InventoryClickEvent e) {
     if (e.getInventory().getType() != InventoryType.ANVIL || e.getCurrentItem().getType() != Material.SPAWNER) {
       return;
