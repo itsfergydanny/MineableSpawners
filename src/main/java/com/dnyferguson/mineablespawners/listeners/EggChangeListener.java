@@ -29,6 +29,9 @@ public class EggChangeListener implements Listener {
         alreadyType = config.getString("eggs.already-this-type");
         requireIndividualPerm = config.getBoolean("eggs.require-individual-permission");
         noIndividualPerm = config.getString("eggs.no-individual-permission");
+        if (!requirePerm) {
+            requireIndividualPerm = false;
+        }
     }
 
     @EventHandler (ignoreCancelled = true)

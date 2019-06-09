@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net</groupId>
-    <artifactId>momentonetwork</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>com.dnyferguson</groupId>
+    <artifactId>mineablespawners</artifactId>
+    <version>2.0</version>
     <packaging>jar</packaging>
 
     <name>MineableSpawners</name>
@@ -15,7 +15,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>https://momentonetwork.net</url>
+    <url>https://dnyferguson.com/</url>
 
     <build>
         <defaultGoal>clean package</defaultGoal>
