@@ -13,9 +13,82 @@
 # and or remove the brackets, otherwise it will not work as intended.
 item-name: '&8[&e%mob% &7Spawner&8]'
 
+# You can set the lore to anything you want as the plugin does not use it for its functioning.
+lore:
+  - '&aPlace this down for'
+  - '&aa %mob% Spawner.'
+
+# Enable or disable having a lore.
+enable-lore: false
+
 # Prevent players from renaming spawners in anvils? This prevents them from changing their types!
 prevent-anvil: true
 prevent-anvil-message: '&cSorry, you can''t rename spawners!'
+
+# Enable or disable compatibility mode. This checks for version 1 of this plugin's lore
+# when placing a spawner to ensure existing spawners work as intended.
+enable-compatibility: true
+
+#
+# SPAWNERGIVE COMMAND (/spawnergive <player> <type> <amount>)
+#
+spawnergive:
+  # Require the permission "mineablespawners.give" to give players spawners.
+  require-permission: true
+
+  # The message if a user doesn't have the permission for the above
+  no-permission: '&cYou don''t have permission to give spawners!'
+
+  # What should be shown when the command is failed?
+  wrong-command: '&cWrong syntax, use /spawnergive <player> <type> <amount>'
+
+  # The message for when the specified player does not exist.
+  no-exists: '&cThe player you specified does not exist.'
+
+  # The message if the amount specified is wrong
+  wrong-amount: '&cThe amount you specified is invalid.'
+
+  # Message if inventory is full and drop is cancelled
+  inventory-full: '&cYour inventory is full! Please make space before mining this spawner.'
+
+  # Invalid mob type message, placeholders available: %mobs% (list of available mobs)
+  invalid-type: '&cInvalid type specified. Available types: &7%mobs%'
+
+  # Set the success messages. placeholders available: %mob%, %amount%, %target%
+  success-sender: '&aYou have successfully sent %amount%x %mob%Spawners to %target%!'
+  success-target: '&aYou have received %amount%x %mob% Spawners!'
+
+#
+# SPAWNER COMMAND (/spawner <type>)
+#
+
+spawner:
+  # Require the permission "mineablespawners.spawner" to set a spawner by looking at it.
+  require-permission: true
+
+  # The message if a user doesn't have the permission for the above
+  no-permission: '&cYou don''t have permission to change spawner types!'
+
+  # What should be shown when the command is failed?
+  wrong-command: '&cWrong syntax, use /spawner <type>'
+
+  # Require individual mob perm? format: "mineablespawners.spawner.<type>", for example "mineablespawners.spawner.cow"
+  require-individual-permission: true
+
+  # No perm message for the above
+  no-individual-permission: '&cYou don''t have permission to change to that mob type!'
+
+  # Message when the player is not looking at a spawner
+  not-looking-at-spawner: '&cYou need to be looking at a spawner to use this command.'
+
+  # Set the success message, placeholders available: %from% (initial mob type), %to% (new mob type)
+  success: '&aYou have successfully changed the spawner from %from% to %to%!'
+
+  # Invalid mob type message, placeholders available: %mobs% (list of available mobs)
+  invalid-type: '&cInvalid type specified. Available types: &7%mobs%'
+
+  # Set the message for when a player attempts to set a spawner to a type it already is
+  already-this-type: '&cThe spawner is already of that type!'
 
 #
 # SPAWNER MINING
@@ -48,7 +121,6 @@ mining:
 
   # Message when it breaks because they dont meet a requirement
   still-break-message: '&cYou did not meet all the criterias to drop the spawner.'
-
 
 #
 # SPAWN EGGS

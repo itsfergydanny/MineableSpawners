@@ -15,6 +15,9 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BlockBreakListener implements Listener {
 
     private boolean requirePerm;
@@ -27,6 +30,8 @@ public class BlockBreakListener implements Listener {
     private boolean stillBreak;
     private String stillBreakMsg;
     private String itemName;
+    private List<String> lore;
+    private boolean enableLore;
 
     public BlockBreakListener(MineableSpawners plugin) {
         FileConfiguration config = plugin.getConfig();
@@ -40,6 +45,8 @@ public class BlockBreakListener implements Listener {
         stillBreak = config.getBoolean("mining.still-break");
         stillBreakMsg = config.getString("mining.still-break-message");
         itemName = config.getString("item-name");
+        lore = config.getStringList("lore");
+        enableLore = config.getBoolean("enable-lore");
     }
 
     @EventHandler (ignoreCancelled = true)
@@ -62,6 +69,7 @@ public class BlockBreakListener implements Listener {
                 if (!stillBreak) {
                     e.setCancelled(true);
                     player.sendMessage(Chat.format(noPerm));
+                    return;
                 }
                 player.sendMessage(Chat.format(stillBreakMsg));
                 return;
@@ -73,6 +81,7 @@ public class BlockBreakListener implements Listener {
                 if (!stillBreak) {
                     e.setCancelled(true);
                     player.sendMessage(Chat.format(noSilk));
+                    return;
                 }
                 player.sendMessage(Chat.format(stillBreakMsg));
                 return;
@@ -83,7 +92,17 @@ public class BlockBreakListener implements Listener {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
         String mob = spawner.getSpawnedType().toString().replace("_", " ");
-        meta.setDisplayName(Chat.format(itemName.replace("%mob%", mob.substring(0, 1).toUpperCase() + mob.substring(1).toLowerCase())));
+        String mobFormatted = mob.substring(0, 1).toUpperCase() + mob.substring(1).toLowerCase();
+        meta.setDisplayName(Chat.format(itemName.replace("%mob%", mobFormatted)));
+
+        List<String> newLore = new ArrayList<>();
+        if (lore != null && enableLore) {
+            for (String line : lore) {
+                newLore.add(Chat.format(line).replace("%mob%", mobFormatted));
+            }
+            meta.setLore(newLore);
+        }
+
         item.setItemMeta(meta);
 
         if (dropInInventory) {
@@ -94,6 +113,7 @@ public class BlockBreakListener implements Listener {
             }
             player.getInventory().addItem(item);
             block.getDrops().clear();
+            return;
         }
 
         Location loc = block.getLocation();

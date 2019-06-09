@@ -20,7 +20,7 @@ public final class MineableSpawners extends JavaPlugin {
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new BlockBreakListener(this), this);
-        pm.registerEvents(new SpawnerPlaceListener(), this);
+        pm.registerEvents(new SpawnerPlaceListener(this), this);
         pm.registerEvents(new EggChangeListener(this), this);
         pm.registerEvents(new AnvilRenameListener(this), this);
     }
