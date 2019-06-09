@@ -42,6 +42,11 @@ public class EggChangeListener implements Listener {
 
         Player player = e.getPlayer();
         ItemStack itemInHand = e.getItem();
+
+        if (itemInHand == null || itemInHand.getType().equals(Material.AIR)) {
+            return;
+        }
+
         String itemName = itemInHand.getType().name();
         Material targetBlock = e.getClickedBlock().getType();
 
