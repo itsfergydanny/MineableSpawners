@@ -23,7 +23,7 @@ public class SpawnerPlaceListener implements Listener {
         log = plugin.getConfig().getBoolean("log");
     }
 
-    @EventHandler
+    @EventHandler (ignoreCancelled = true)
     public void onSpawnerPlace(BlockPlaceEvent e) {
         Block block = e.getBlock();
         Material material = block.getType();
