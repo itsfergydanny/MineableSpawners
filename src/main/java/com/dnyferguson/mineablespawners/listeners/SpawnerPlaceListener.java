@@ -38,7 +38,7 @@ public class SpawnerPlaceListener implements Listener {
             try {
                 entity = EntityType.valueOf(meta.getLore().toString().split(": §7")[1].split("]")[0].toUpperCase());
                 found = true;
-            } catch (NullPointerException ex) {}
+            } catch (NullPointerException|ArrayIndexOutOfBoundsException ex) {}
         }
 
         try {

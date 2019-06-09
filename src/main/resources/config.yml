@@ -55,7 +55,7 @@ spawnergive:
   invalid-type: '&cInvalid type specified. Available types: &7%mobs%'
 
   # Set the success messages. placeholders available: %mob%, %amount%, %target%
-  success-sender: '&aYou have successfully sent %amount%x %mob%Spawners to %target%!'
+  success-sender: '&aYou have successfully sent %amount%x %mob% Spawners to %target%!'
   success-target: '&aYou have received %amount%x %mob% Spawners!'
 
 #
@@ -121,6 +121,9 @@ mining:
 
   # Message when it breaks because they dont meet a requirement
   still-break-message: '&cYou did not meet all the criterias to drop the spawner.'
+
+  # Set a percent change to drop, from 0.00 (0%) to 1.00 (100%)
+  drop-chance: 1.0
 
 #
 # SPAWN EGGS

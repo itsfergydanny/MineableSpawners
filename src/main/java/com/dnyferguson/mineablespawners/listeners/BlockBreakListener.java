@@ -32,6 +32,7 @@ public class BlockBreakListener implements Listener {
     private String itemName;
     private List<String> lore;
     private boolean enableLore;
+    private double dropChance;
 
     public BlockBreakListener(MineableSpawners plugin) {
         FileConfiguration config = plugin.getConfig();
@@ -47,6 +48,7 @@ public class BlockBreakListener implements Listener {
         itemName = config.getString("item-name");
         lore = config.getStringList("lore");
         enableLore = config.getBoolean("enable-lore");
+        dropChance = config.getDouble("mining.drop-chance");
     }
 
     @EventHandler (ignoreCancelled = true)
@@ -104,6 +106,13 @@ public class BlockBreakListener implements Listener {
         }
 
         item.setItemMeta(meta);
+
+        if (dropChance != 1) {
+            double random = Math.random();
+            if (random <= dropChance) {
+                return;
+            }
+        }
 
         if (dropInInventory) {
             if (player.getInventory().firstEmpty() == -1) {
