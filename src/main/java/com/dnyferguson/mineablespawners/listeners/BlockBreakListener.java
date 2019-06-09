@@ -33,6 +33,8 @@ public class BlockBreakListener implements Listener {
     private List<String> lore;
     private boolean enableLore;
     private double dropChance;
+    private List<String> worlds;
+    private String blacklisted;
 
     public BlockBreakListener(MineableSpawners plugin) {
         FileConfiguration config = plugin.getConfig();
@@ -49,6 +51,8 @@ public class BlockBreakListener implements Listener {
         lore = config.getStringList("lore");
         enableLore = config.getBoolean("enable-lore");
         dropChance = config.getDouble("mining.drop-chance");
+        worlds = config.getStringList("blacklisted-worlds");
+        blacklisted = config.getString("blacklisted-message");
     }
 
     @EventHandler (ignoreCancelled = true)
@@ -61,6 +65,11 @@ public class BlockBreakListener implements Listener {
         }
 
         Player player = e.getPlayer();
+
+        if (worlds.contains(player.getWorld().getName())) {
+            player.sendMessage(Chat.format(blacklisted));
+            return;
+        }
 
         if (!dropExp) {
             e.setExpToDrop(0);

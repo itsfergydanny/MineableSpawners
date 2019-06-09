@@ -12,6 +12,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public class SpawnerCommand implements CommandExecutor {
 
     private boolean requirePerm;
@@ -23,6 +25,8 @@ public class SpawnerCommand implements CommandExecutor {
     private String success;
     private String invalidType;
     private String alreadyType;
+    private List<String> worlds;
+    private String blacklisted;
 
     public SpawnerCommand(MineableSpawners plugin) {
         FileConfiguration config = plugin.getConfig();
@@ -38,6 +42,8 @@ public class SpawnerCommand implements CommandExecutor {
             requireIndividualPerm = false;
         }
         alreadyType = config.getString("spawner.already-this-type");
+        worlds = config.getStringList("blacklisted-worlds");
+        blacklisted = config.getString("blacklisted-message");
     }
 
     @Override
@@ -48,6 +54,11 @@ public class SpawnerCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
+
+        if (worlds.contains(player.getWorld().getName())) {
+            player.sendMessage(Chat.format(blacklisted));
+            return true;
+        }
 
         if (requirePerm) {
             if (!player.hasPermission("mineablespawners.spawner")) {
