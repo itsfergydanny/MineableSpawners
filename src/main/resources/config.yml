@@ -34,6 +34,9 @@ blacklisted-worlds:
   - 'shop'
 blacklisted-message: '&cThat is not allowed in this world!'
 
+# Whether or not to log (to console) spawner placement
+log: false
+
 #
 # SPAWNERGIVE COMMAND (/spawnergive <player> <type> <amount>)
 #
