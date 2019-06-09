@@ -23,6 +23,10 @@ public class AnvilRenameListener implements Listener {
 
   @EventHandler (ignoreCancelled = true)
   public void onAnvilRename(InventoryClickEvent e) {
+    if (e.getInventory() == null || e.getInventory().getType() == null) {
+      return;
+    }
+
     if (e.getInventory().getType() != InventoryType.ANVIL || e.getCurrentItem().getType() != Material.SPAWNER) {
       return;
     }
