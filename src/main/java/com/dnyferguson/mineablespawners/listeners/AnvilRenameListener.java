@@ -27,6 +27,10 @@ public class AnvilRenameListener implements Listener {
       return;
     }
 
+    if (e.getCurrentItem() == null || e.getCurrentItem().getType() == null) {
+      return;
+    }
+
     if (e.getInventory().getType() != InventoryType.ANVIL || e.getCurrentItem().getType() != Material.SPAWNER) {
       return;
     }
