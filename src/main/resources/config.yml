@@ -9,9 +9,8 @@
 # GLOBAL
 #
 
-# Set the item name. This is used by the plugin to know which spawner to place down. Please only change the colors
-# and or remove the brackets, otherwise it will not work as intended.
-item-name: '&8[&e%mob% &7Spawner&8]'
+# Change the mob name color in the item name
+mob-name-color: '&e'
 
 # You can set the lore to anything you want as the plugin does not use it for its functioning.
 lore:
@@ -37,9 +36,11 @@ blacklisted-message: '&cThat is not allowed in this world!'
 # Whether or not to log (to console) spawner placement
 log: false
 
+
 #
 # SPAWNERGIVE COMMAND (/spawnergive <player> <type> <amount>)
 #
+
 spawnergive:
   # Require the permission "mineablespawners.give" to give players spawners.
   require-permission: true
@@ -65,6 +66,7 @@ spawnergive:
   # Set the success messages. placeholders available: %mob%, %amount%, %target%
   success-sender: '&aYou have successfully sent %amount%x %mob% Spawners to %target%!'
   success-target: '&aYou have received %amount%x %mob% Spawners!'
+
 
 #
 # SPAWNER COMMAND (/spawner <type>)
@@ -97,6 +99,7 @@ spawner:
 
   # Set the message for when a player attempts to set a spawner to a type it already is
   already-this-type: '&cThe spawner is already of that type!'
+
 
 #
 # SPAWNER MINING
@@ -132,6 +135,7 @@ mining:
 
   # Set a percent change to drop, from 0.00 (0%) to 1.00 (100%)
   drop-chance: 1.0
+
 
 #
 # SPAWN EGGS

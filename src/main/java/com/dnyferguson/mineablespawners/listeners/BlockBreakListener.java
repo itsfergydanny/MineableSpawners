@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -29,7 +30,7 @@ public class BlockBreakListener implements Listener {
     private String inventoryFull;
     private boolean stillBreak;
     private String stillBreakMsg;
-    private String itemName;
+    private String mobNameColor;
     private List<String> lore;
     private boolean enableLore;
     private double dropChance;
@@ -47,7 +48,7 @@ public class BlockBreakListener implements Listener {
         inventoryFull = config.getString("mining.inventory-full");
         stillBreak = config.getBoolean("mining.still-break");
         stillBreakMsg = config.getString("mining.still-break-message");
-        itemName = config.getString("item-name");
+        mobNameColor = config.getString("mob-name-color");
         lore = config.getStringList("lore");
         enableLore = config.getBoolean("enable-lore");
         dropChance = config.getDouble("mining.drop-chance");
@@ -104,7 +105,7 @@ public class BlockBreakListener implements Listener {
         ItemMeta meta = item.getItemMeta();
         String mob = spawner.getSpawnedType().toString().replace("_", " ");
         String mobFormatted = mob.substring(0, 1).toUpperCase() + mob.substring(1).toLowerCase();
-        meta.setDisplayName(Chat.format(itemName.replace("%mob%", mobFormatted)));
+        meta.setDisplayName(Chat.format("&8[" + mobNameColor + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted)));
 
         List<String> newLore = new ArrayList<>();
         if (lore != null && enableLore) {

@@ -25,7 +25,7 @@ public class SpawnerGiveCommand implements CommandExecutor {
     private String wrongAmount;
     private String inventoryFull;
     private String invalidType;
-    private String itemName;
+    private String mobNameColor;
     private List<String> lore;
     private boolean enableLore;
     private String successSender;
@@ -40,7 +40,7 @@ public class SpawnerGiveCommand implements CommandExecutor {
         wrongAmount = config.getString("spawnergive.wrong-amount");
         inventoryFull = config.getString("spawnergive.insufficient-space");
         invalidType = config.getString("spawnergive.invalid-type");
-        itemName = config.getString("item-name");
+        mobNameColor = config.getString("mob-name-color");
         lore = config.getStringList("lore");
         enableLore = config.getBoolean("enable-lore");
         successSender = config.getString("spawnergive.success-sender");
@@ -98,7 +98,7 @@ public class SpawnerGiveCommand implements CommandExecutor {
         item.setAmount(amount);
 
         String mobFormatted = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
-        meta.setDisplayName(Chat.format(itemName.replace("%mob%", mobFormatted)));
+        meta.setDisplayName(Chat.format("&8[" + mobNameColor + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted)));
         List<String> newLore = new ArrayList<>();
         if (lore != null && enableLore) {
             for (String line : lore) {
