@@ -56,12 +56,12 @@ public class BlockBreakListener implements Listener {
         blacklisted = config.getString("blacklisted-message");
     }
 
-    @EventHandler (ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.MONITOR)
     public void onSpawnerMine(BlockBreakEvent e) {
         Block block = e.getBlock();
         Material material = block.getType();
 
-        if (material != Material.SPAWNER) {
+        if (material != Material.SPAWNER || e.isCancelled()) {
             return;
         }
 
