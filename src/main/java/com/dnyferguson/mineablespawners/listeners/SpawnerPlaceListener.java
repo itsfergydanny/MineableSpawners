@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +24,7 @@ public class SpawnerPlaceListener implements Listener {
         log = plugin.getConfig().getBoolean("log");
     }
 
-    @EventHandler (ignoreCancelled = true)
+    @EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onSpawnerPlace(BlockPlaceEvent e) {
         Block block = e.getBlock();
         Material material = block.getType();
