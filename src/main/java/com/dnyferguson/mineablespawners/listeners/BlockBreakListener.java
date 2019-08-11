@@ -9,6 +9,7 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -24,6 +25,7 @@ public class BlockBreakListener implements Listener {
     private boolean requirePerm;
     private String noPerm;
     private boolean requireSilk;
+    private boolean requireSilk2;
     private String noSilk;
     private boolean dropExp;
     private boolean dropInInventory;
@@ -42,6 +44,7 @@ public class BlockBreakListener implements Listener {
         requirePerm = config.getBoolean("mining.require-permission");
         noPerm = config.getString("mining.no-permission");
         requireSilk = config.getBoolean("mining.require-silktouch");
+        requireSilk2 = config.getBoolean("mining.require-silktouch-2");
         noSilk = config.getString("mining.no-silktouch");
         dropExp = config.getBoolean("mining.drop-exp");
         dropInInventory = config.getBoolean("mining.drop-in-inventory");
@@ -78,25 +81,28 @@ public class BlockBreakListener implements Listener {
 
         if (requirePerm) {
             if (!player.hasPermission("mineablespawners.break")) {
-                if (!stillBreak) {
-                    e.setCancelled(true);
-                    player.sendMessage(Chat.format(noPerm));
-                    return;
-                }
-                player.sendMessage(Chat.format(stillBreakMsg));
+                handleStillBreak(e, player, noPerm);
                 return;
             }
         }
 
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+
         if (requireSilk) {
-            if (!player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH) && !player.hasPermission("mineablespawners.nosilk")) {
-                if (!stillBreak) {
-                    e.setCancelled(true);
-                    player.sendMessage(Chat.format(noSilk));
+            int silkTouchLevel = 0;
+            if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+                silkTouchLevel = itemInHand.getEnchantmentLevel(Enchantment.SILK_TOUCH);
+            }
+            if (requireSilk2) {
+                if (silkTouchLevel != 2) {
+                    handleStillBreak(e, player, noSilk);
                     return;
                 }
-                player.sendMessage(Chat.format(stillBreakMsg));
-                return;
+            } else {
+                if (silkTouchLevel != 1) {
+                    handleStillBreak(e, player, noSilk);
+                    return;
+                }
             }
         }
 
@@ -137,5 +143,14 @@ public class BlockBreakListener implements Listener {
 
         Location loc = block.getLocation();
         loc.getWorld().dropItemNaturally(loc, item);
+    }
+
+    private void handleStillBreak(BlockBreakEvent e, Player player, String msg) {
+        if (!stillBreak) {
+            e.setCancelled(true);
+            player.sendMessage(Chat.format(msg));
+            return;
+        }
+        player.sendMessage(Chat.format(stillBreakMsg));
     }
 }
