@@ -115,6 +115,9 @@ mining:
   # Does the player need silk touch? If true, you can give the permission "mineablespawners.nosilk" to bypass this check.
   require-silktouch: true
 
+  # Require silk touch 2 instead of 1. If you do this simply change the no-silktouch message to say silk touch 2 instead of 1.
+  require-silktouch-2: false
+
   # Message if a user doesn't have silk
   no-silktouch: '&cYou need silk touch to mine this spawner!'
 

@@ -42,7 +42,7 @@ public class SpawnerPlaceListener implements Listener {
             try {
                 entity = EntityType.valueOf(meta.getLore().toString().split(": §7")[1].split("]")[0].toUpperCase());
                 found = true;
-            } catch (NullPointerException|ArrayIndexOutOfBoundsException ex) {}
+            } catch (NullPointerException|ArrayIndexOutOfBoundsException ignored) {}
         }
 
         try {
@@ -58,8 +58,6 @@ public class SpawnerPlaceListener implements Listener {
                 Location loc = block.getLocation();
                 System.out.println("[MineableSpawners] Player " + e.getPlayer().getName() + " placed a " + entity.name().toLowerCase() + " spawner at x:" + loc.getX() + ", y:" + loc.getY() + ", z:" + loc.getZ() + " (" + loc.getWorld().getName() + ")");
             }
-        } catch (NullPointerException ex) {
-            System.out.println("[MineableSpawners] An error occured while placing a spawner. Please contact the author!");
-        }
+        } catch (NullPointerException|IllegalArgumentException ignored) {}
     }
 }
