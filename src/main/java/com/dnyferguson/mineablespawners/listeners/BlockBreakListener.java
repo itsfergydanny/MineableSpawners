@@ -87,7 +87,7 @@ public class BlockBreakListener implements Listener {
 
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
-        if (requireSilk) {
+        if (requireSilk && !player.hasPermission("mineablespawners.nosilk")) {
             int silkTouchLevel = 0;
             if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
                 silkTouchLevel = itemInHand.getEnchantmentLevel(Enchantment.SILK_TOUCH);
