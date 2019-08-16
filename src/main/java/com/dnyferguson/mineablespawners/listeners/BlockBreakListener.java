@@ -124,7 +124,7 @@ public class BlockBreakListener implements Listener {
 
         if (dropChance != 1) {
             double random = Math.random();
-            if (random <= dropChance) {
+            if (random >= dropChance) {
                 return;
             }
         }
