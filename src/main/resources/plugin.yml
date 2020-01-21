@@ -1,7 +1,7 @@
 name: MineableSpawners
-version: 2.0.8
+version: 2.0.9
 main: com.dnyferguson.mineablespawners.MineableSpawners
-authors: [fergydanny]
+authors: [fergydanny, kotas]
 description: A simplistic silk spawner plugin
 website: https://dnyferguson.com
 api-version: 1.13
