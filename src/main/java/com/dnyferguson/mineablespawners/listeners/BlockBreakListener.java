@@ -150,6 +150,9 @@ public class BlockBreakListener implements Listener {
             player.sendMessage(Chat.format(msg));
             return;
         }
-        player.sendMessage(Chat.format(stillBreakMsg));
+
+        if (stillBreakMsg.length() > 0) {
+            player.sendMessage(Chat.format(stillBreakMsg));
+        }
     }
 }
