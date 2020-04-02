@@ -62,7 +62,7 @@ public class SpawnerMineListener implements Listener {
             }
             if (plugin.getConfigurationHandler().getBoolean("mining", "require-silktouch-level")) {
                 int requiredLevel = plugin.getConfigurationHandler().getInteger("mining", "required-level");
-                if (silkTouchLevel != requiredLevel) {
+                if (silkTouchLevel < requiredLevel) {
                     handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "not-level-required"), plugin.getConfigurationHandler().getMessage("minings", "requirements.silktouch-level"));
                     return;
                 }
