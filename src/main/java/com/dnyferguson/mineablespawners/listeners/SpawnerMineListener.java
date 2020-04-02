@@ -19,44 +19,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockBreakListener implements Listener {
+public class SpawnerMineListener implements Listener {
     private MineableSpawners plugin;
-    private boolean requirePerm;
-    private String noPerm;
-    private boolean requireSilk;
-    private boolean requireSilk2;
-    private String noSilk;
-    private boolean dropExp;
-    private boolean dropInInventory;
-    private String inventoryFull;
-    private boolean stillBreak;
-    private String stillBreakMsg;
-    private String displayName;
-    private List<String> lore;
-    private boolean enableLore;
-    private double dropChance;
-    private List<String> worlds;
-    private String blacklisted;
 
-    public BlockBreakListener(MineableSpawners plugin) {
+    public SpawnerMineListener(MineableSpawners plugin) {
         this.plugin = plugin;
-        FileConfiguration config = plugin.getConfig();
-        requirePerm = config.getBoolean("mining.require-permission");
-        noPerm = config.getString("mining.no-permission");
-        requireSilk = config.getBoolean("mining.require-silktouch");
-        requireSilk2 = config.getBoolean("mining.require-silktouch-2");
-        noSilk = config.getString("mining.no-silktouch");
-        dropExp = config.getBoolean("mining.drop-exp");
-        dropInInventory = config.getBoolean("mining.drop-in-inventory");
-        inventoryFull = config.getString("mining.inventory-full");
-        stillBreak = config.getBoolean("mining.still-break");
-        stillBreakMsg = config.getString("mining.still-break-message");
-        displayName = config.getString("displayname");
-        lore = config.getStringList("lore");
-        enableLore = config.getBoolean("enable-lore");
-        dropChance = config.getDouble("mining.drop-chance");
-        worlds = config.getStringList("blacklisted-worlds");
-        blacklisted = config.getString("blacklisted-message");
     }
 
     @EventHandler (priority = EventPriority.MONITOR)
@@ -70,37 +37,38 @@ public class BlockBreakListener implements Listener {
 
         Player player = e.getPlayer();
 
-        if (worlds.contains(player.getWorld().getName())) {
-            player.sendMessage(Chat.format(blacklisted));
+        if (plugin.getConfigurationHandler().getList("mining", "blacklisted-worlds").contains(player.getWorld().getName())) {
+            player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "blacklisted"));
             return;
         }
 
-        if (!dropExp) {
+        if (!plugin.getConfigurationHandler().getBoolean("mining", "drop-exp")) {
             e.setExpToDrop(0);
         }
 
-        if (requirePerm) {
-            if (!player.hasPermission("mineablespawners.break")) {
-                handleStillBreak(e, player, noPerm);
+        if (plugin.getConfigurationHandler().getBoolean("mining", "require-permission")) {
+            if (!player.hasPermission("mineablespawners.mine")) {
+                handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "no-permission"), plugin.getConfigurationHandler().getMessage("minings", "requirements.permission"));
                 return;
             }
         }
 
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
-        if (requireSilk && !player.hasPermission("mineablespawners.nosilk")) {
+        if (plugin.getConfigurationHandler().getBoolean("mining", "require-silktouch") && !player.hasPermission("mineablespawners.nosilk")) {
             int silkTouchLevel = 0;
             if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
                 silkTouchLevel = itemInHand.getEnchantmentLevel(Enchantment.SILK_TOUCH);
             }
-            if (requireSilk2) {
-                if (silkTouchLevel != 2) {
-                    handleStillBreak(e, player, noSilk);
+            if (plugin.getConfigurationHandler().getBoolean("mining", "require-silktouch-level")) {
+                int requiredLevel = plugin.getConfigurationHandler().getInteger("mining", "required-level");
+                if (silkTouchLevel != requiredLevel) {
+                    handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "not-level-required"), plugin.getConfigurationHandler().getMessage("minings", "requirements.silktouch-level"));
                     return;
                 }
             } else {
                 if (silkTouchLevel != 1) {
-                    handleStillBreak(e, player, noSilk);
+                    handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "no-silktouch"), plugin.getConfigurationHandler().getMessage("minings", "requirements.silktouch"));
                     return;
                 }
             }
@@ -111,10 +79,10 @@ public class BlockBreakListener implements Listener {
         ItemMeta meta = item.getItemMeta();
         String mobFormatted = Chat.uppercaseStartingLetters(spawner.getSpawnedType().toString());
 
-        meta.setDisplayName(Chat.format(displayName.replace("%mob%", mobFormatted)));
+        meta.setDisplayName(plugin.getConfigurationHandler().getMessage("global", "name").replace("%mob%", mobFormatted));
         List<String> newLore = new ArrayList<>();
-        if (lore != null && enableLore) {
-            for (String line : lore) {
+        if (plugin.getConfigurationHandler().getList("global", "lore") != null && plugin.getConfigurationHandler().getBoolean("global", "lore-enabled")) {
+            for (String line : plugin.getConfigurationHandler().getList("global", "lore")) {
                 newLore.add(Chat.format(line).replace("%mob%", mobFormatted));
             }
             meta.setLore(newLore);
@@ -123,6 +91,8 @@ public class BlockBreakListener implements Listener {
 
         item = plugin.getNmsHandler().setType(item, spawner.getSpawnedType());
 
+        double dropChance = plugin.getConfigurationHandler().getDouble("mining", "chance");
+
         if (dropChance != 1) {
             double random = Math.random();
             if (random >= dropChance) {
@@ -130,10 +100,10 @@ public class BlockBreakListener implements Listener {
             }
         }
 
-        if (dropInInventory) {
+        if (plugin.getConfigurationHandler().getBoolean("mining", "drop-to-inventory")) {
             if (player.getInventory().firstEmpty() == -1) {
                 e.setCancelled(true);
-                player.sendMessage(Chat.format(inventoryFull));
+                player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "inventory-full"));
                 return;
             }
             player.getInventory().addItem(item);
@@ -145,15 +115,15 @@ public class BlockBreakListener implements Listener {
         loc.getWorld().dropItemNaturally(loc, item);
     }
 
-    private void handleStillBreak(BlockBreakEvent e, Player player, String msg) {
-        if (!stillBreak) {
+    private void handleStillBreak(BlockBreakEvent e, Player player, String msg, String reason) {
+        if (!plugin.getConfigurationHandler().getBoolean("mining", "still-break")) {
             e.setCancelled(true);
             player.sendMessage(Chat.format(msg));
             return;
         }
 
-        if (stillBreakMsg.length() > 0) {
-            player.sendMessage(Chat.format(stillBreakMsg));
+        if (msg.length() > 0) {
+            player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "still-break").replace("%requirement%", reason));
         }
     }
 }

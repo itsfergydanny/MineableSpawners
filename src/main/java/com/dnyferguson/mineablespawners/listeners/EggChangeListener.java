@@ -13,25 +13,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class EggChangeListener implements Listener {
-
-    private boolean requirePerm;
-    private String noPerm;
-    private String success;
-    private String alreadyType;
-    private boolean requireIndividualPerm;
-    private String noIndividualPerm;
+    private MineableSpawners plugin;
 
     public EggChangeListener(MineableSpawners plugin) {
-        FileConfiguration config = plugin.getConfig();
-        requirePerm = config.getBoolean("eggs.require-permission");
-        noPerm = config.getString("eggs.no-permission");
-        success = config.getString("eggs.success");
-        alreadyType = config.getString("eggs.already-this-type");
-        requireIndividualPerm = config.getBoolean("eggs.require-individual-permission");
-        noIndividualPerm = config.getString("eggs.no-individual-permission");
-        if (!requirePerm) {
-            requireIndividualPerm = false;
-        }
+        this.plugin = plugin;
     }
 
     @EventHandler (ignoreCancelled = true)
@@ -54,20 +39,20 @@ public class EggChangeListener implements Listener {
             return;
         }
 
-        if (requirePerm) {
+        if (plugin.getConfigurationHandler().getBoolean("eggs", "require-permission")) {
             if (!player.hasPermission("mineablespawners.eggchange")) {
                 e.setCancelled(true);
-                player.sendMessage(Chat.format(noPerm));
+                player.sendMessage(plugin.getConfigurationHandler().getMessage("eggs", "no-permission"));
                 return;
             }
         }
 
         String to = itemName.split("_SPAWN_EGG")[0].replace("_", " ").toLowerCase();
 
-        if (requireIndividualPerm) {
+        if (plugin.getConfigurationHandler().getBoolean("eggs", "require-individual-permission")) {
             if (!player.hasPermission("mineablespawners.eggchange." + to.replace(" ", "_"))) {
                 e.setCancelled(true);
-                player.sendMessage(Chat.format(noIndividualPerm));
+                player.sendMessage(plugin.getConfigurationHandler().getMessage("eggs", "no-individual-permission"));
                 return;
             }
         }
@@ -77,10 +62,10 @@ public class EggChangeListener implements Listener {
 
         if (from.equals(to)) {
             e.setCancelled(true);
-            player.sendMessage(Chat.format(alreadyType));
+            player.sendMessage(plugin.getConfigurationHandler().getMessage("eggs", "already-type"));
             return;
         }
 
-        player.sendMessage(Chat.format(success.replace("%from%", from).replace("%to%", to)));
+        player.sendMessage(plugin.getConfigurationHandler().getMessage("eggs", "success").replace("%from%", from).replace("%to%", to));
     }
 }
