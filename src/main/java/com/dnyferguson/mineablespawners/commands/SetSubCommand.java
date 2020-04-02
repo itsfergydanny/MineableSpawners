@@ -5,95 +5,60 @@ import com.dnyferguson.mineablespawners.utils.Chat;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+public class SetSubCommand {
 
-public class SetSubCommand implements CommandExecutor {
-    private String noPerm;
-    private String wrongCommand;
-    private boolean requireIndividualPerm;
-    private String noIndividualPerm;
-    private String notLookingAt;
-    private String success;
-    private String invalidType;
-    private String alreadyType;
-    private List<String> worlds;
-    private String blacklisted;
+    public SetSubCommand() {}
 
-    public SetSubCommand(MineableSpawners plugin) {
-        FileConfiguration config = plugin.getConfig();
-        noPerm = config.getString("spawner.no-permission");
-        wrongCommand = config.getString("spawner.wrong-command");
-        requireIndividualPerm = config.getBoolean("spawner.require-individual-permission");
-        noIndividualPerm = config.getString("spawner.no-individual-permission");
-        notLookingAt = config.getString("spawner.not-looking-at-spawner");
-        success = config.getString("spawner.success");
-        invalidType = config.getString("spawner.invalid-type");
-        if (!requirePerm) {
-            requireIndividualPerm = false;
-        }
-        alreadyType = config.getString("spawner.already-this-type");
-        worlds = config.getStringList("blacklisted-worlds");
-        blacklisted = config.getString("blacklisted-message");
-    }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public void execute(MineableSpawners plugin, CommandSender sender, String type) {
         if (!(sender instanceof Player)) {
             System.out.println("[MineableSpawners] Only players can run this command!");
-            return true;
+            return;
         }
 
         Player player = (Player) sender;
 
-        if (worlds.contains(player.getWorld().getName())) {
-            player.sendMessage(Chat.format(blacklisted));
-            return true;
+        if (plugin.getConfigurationHandler().getList("set", "blacklisted-worlds").contains(player.getWorld().getName())) {
+            player.sendMessage(plugin.getConfigurationHandler().getMessage("set", "blacklisted"));
+            return;
         }
 
-        EntityType type = null;
+        EntityType entityType;
         try {
-            type = EntityType.valueOf(args[0].toUpperCase());
+            entityType = EntityType.valueOf(type.toUpperCase());
         } catch (IllegalArgumentException e) {
-            StringBuilder str = new StringBuilder();
-            for (EntityType entity : EntityType.values()) {
-                str.append(entity.name().toLowerCase());
-                str.append(", ");
-            }
-            player.sendMessage(Chat.format(invalidType.replace("%mobs%", str.toString())));
-            return true;
+            player.sendMessage(plugin.getConfigurationHandler().getMessage("set", "invalid-type"));
+            return;
         }
 
-        if (requireIndividualPerm) {
-            if (!player.hasPermission("mineablespawners.spawner." + args[0].toLowerCase())) {
-                player.sendMessage(Chat.format(noIndividualPerm));
-                return true;
+        if (plugin.getConfigurationHandler().getBoolean("set", "require-individual-permission")) {
+            if (!player.hasPermission("mineablespawners.set." + type.toLowerCase())) {
+                player.sendMessage(plugin.getConfigurationHandler().getMessage("set", "no-individual-permission"));
+                return;
             }
         }
 
         Block target = player.getTargetBlock(null, 5);
 
         if (target.getState().getBlock().getType() != Material.SPAWNER) {
-            player.sendMessage(Chat.format(notLookingAt));
-            return true;
+            player.sendMessage(plugin.getConfigurationHandler().getMessage("set", "not-looking-at"));
+            return;
         }
 
         CreatureSpawner spawner = (CreatureSpawner) target.getState();
-        spawner.setSpawnedType(type);
+        spawner.setSpawnedType(entityType);
         spawner.update();
-        String from = spawner.getSpawnedType().toString().replace("_", " ").toLowerCase();
-        String to = args[0].replace("_", " ").toLowerCase();
+
+        String from = Chat.uppercaseStartingLetters(spawner.getSpawnedType().name());
+        String to = Chat.uppercaseStartingLetters(type);
         if (from.equals(to)) {
-            player.sendMessage(Chat.format(alreadyType));
-            return true;
+            player.sendMessage(plugin.getConfigurationHandler().getMessage("set", "already-type"));
+            return;
         }
-        player.sendMessage(Chat.format(success.replace("%from%", from).replace("%to%", to)));
-        return true;
+
+        player.sendMessage(plugin.getConfigurationHandler().getMessage("set", "success").replace("%from%", from).replace("%to%", to));
     }
 }
