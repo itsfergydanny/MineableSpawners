@@ -74,7 +74,7 @@ public class MineableSpawnersCommand implements CommandExecutor {
         }
 
         if (subCommand.equals("reload") && sender.hasPermission("mineablespawners.reload")) {
-            plugin.getConfigurationHandler().reload(plugin.getConfig());
+            plugin.getConfigurationHandler().reload();
             sender.sendMessage(Chat.format("&e[MineableSpawners] &aYou have successfully reloaded the config!"));
             return true;
         }
@@ -84,28 +84,30 @@ public class MineableSpawnersCommand implements CommandExecutor {
     }
 
     private void sendHelpMessage(CommandSender sender) {
-        StringBuilder msg = new StringBuilder(plugin.getConfigurationHandler().getMessage("main", "title")).append("\n");
+        StringBuilder msg = new StringBuilder(plugin.getConfigurationHandler().getMessage("main", "title")).append("\n \n");
         if (!plugin.getConfigurationHandler().getBoolean("give", "require-permission")) {
             msg.append(plugin.getConfigurationHandler().getMessage("main", "give"));
-            msg.append("\n");
+            msg.append("\n \n");
         }
         if (plugin.getConfigurationHandler().getBoolean("give", "require-permission") && sender.hasPermission("mineablespawners.give")) {
             msg.append(plugin.getConfigurationHandler().getMessage("main", "give"));
-            msg.append("\n");
+            msg.append("\n \n");
         }
         if (!plugin.getConfigurationHandler().getBoolean("set", "require-permission")) {
             msg.append(plugin.getConfigurationHandler().getMessage("main", "set"));
-            msg.append("\n");
+            msg.append("\n \n");
         }
         if (plugin.getConfigurationHandler().getBoolean("set", "require-permission") && sender.hasPermission("mineablespawners.set")) {
             msg.append(plugin.getConfigurationHandler().getMessage("main", "set"));
-            msg.append("\n");
+            msg.append("\n \n");
         }
-        if (!plugin.getConfigurationHandler().getBoolean("type", "require-permission")) {
+        if (!plugin.getConfigurationHandler().getBoolean("types", "require-permission")) {
             msg.append(plugin.getConfigurationHandler().getMessage("main", "types"));
+            msg.append("\n \n");
         }
-        if (plugin.getConfigurationHandler().getBoolean("type", "require-permission") && sender.hasPermission("mineablespawners.types")) {
+        if (plugin.getConfigurationHandler().getBoolean("types", "require-permission") && sender.hasPermission("mineablespawners.types")) {
             msg.append(plugin.getConfigurationHandler().getMessage("main", "types"));
+            msg.append("\n \n");
         }
         if (sender.hasPermission("mineablespawners.reload")) {
             msg.append(plugin.getConfigurationHandler().getMessage("main", "reload"));
