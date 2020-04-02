@@ -24,6 +24,7 @@ main:
     give: '&c/mineablespawners give <player> <type> <amount> &7(Give a player a spawner)'
     set: '&f/mineablespawners set <type> &7(Set the type of the spawner you are looking at)'
     types: '&7/mineablespawners types'
+    reload: '&4/mineablespawners reload &7(Reloads configuration)'
 
 #
 # /mineablespawners give command
@@ -45,7 +46,31 @@ give:
 # /mineablespawners set command
 #
 set:
-  # Whether or not to require the permisison "mineablespawners.set" to give set spawner type while looking at it.
+  # Whether or not to require the permisison "mineablespawners.set" to set a spawners type while looking at it.
+  require-permission: true
+  # Whether or not to require the permission "mineablespawners.set.<type>" to set a spawners type while looking at it.
+  require-individual-permission: true
+  # Configure worlds players will not be able to change spawners in.
+  blacklisted-worlds:
+    - 'worldname'
+  messages:
+    no-permission: '&cNo Permission.'
+    no-individual-permission: '&cYou do not have permission to use that type.'
+    invalid-type: '&cThat type does not exist. Use &7/mineablespawners types &cto list all available types.'
+    not-looking-at: '&cYou are not looking at a spawner.'
+    already-type: '&cThat spawner is already of this type.'
+    # Here you can use the placeholders: %from% => mob its changing from, %to% => mob its changing to.
+    success: '&aYou have successfully changed the spawner from %from% to %to%!'
+    blacklisted: '&cYou cant do that in this world.'
+
+#
+# /mineablespawners types command
+#
+types:
+  # Whether or not to require the permisison "mineablespawners.types" to set a spawners type while looking at it.
   require-permission: true
   messages:
     no-permission: '&cNo Permission.'
+    title: '&eAvailable Types:'
+    # This just sets how the mobs are listed. Available placeholder: %mob%
+    entries: '&f%mob%&7,'

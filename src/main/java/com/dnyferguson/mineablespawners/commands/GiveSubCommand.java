@@ -4,10 +4,7 @@ import com.dnyferguson.mineablespawners.MineableSpawners;
 import com.dnyferguson.mineablespawners.utils.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,15 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GiveSubCommand {
-    private boolean loreEnabled;
-    private String displayName;
-    private List<String> lore;
 
-    public GiveSubCommand(MineableSpawners plugin) {
-        loreEnabled = plugin.getConfigurationHandler().getBoolean("global", "lore-enabled");
-        displayName = plugin.getConfigurationHandler().getMessage("global", "name");
-        lore = plugin.getConfigurationHandler().getList("global", "lore");
-    }
+    public GiveSubCommand() {}
 
     public void execute(MineableSpawners plugin, CommandSender sender, String target, String type, String amt) {
         Player targetPlayer = Bukkit.getPlayer(target);
@@ -60,10 +50,10 @@ public class GiveSubCommand {
         item.setAmount(amount);
 
         String mobFormatted = Chat.uppercaseStartingLetters(entityType.name());
-        meta.setDisplayName(Chat.format(displayName.replace("%mob%", mobFormatted)));
+        meta.setDisplayName(Chat.format(plugin.getConfigurationHandler().getMessage("global", "name").replace("%mob%", mobFormatted)));
         List<String> newLore = new ArrayList<>();
-        if (lore != null && loreEnabled) {
-            for (String line : lore) {
+        if (plugin.getConfigurationHandler().getList("global", "lore") != null && plugin.getConfigurationHandler().getBoolean("global", "lore-enabled")) {
+            for (String line : plugin.getConfigurationHandler().getList("global", "lore")) {
                 newLore.add(Chat.format(line).replace("%mob%", mobFormatted));
             }
             meta.setLore(newLore);
