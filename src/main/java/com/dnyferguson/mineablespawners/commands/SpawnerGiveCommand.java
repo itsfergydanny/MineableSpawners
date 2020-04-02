@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpawnerGiveCommand implements CommandExecutor {
-
+    private MineableSpawners plugin;
     private boolean requirePerm;
     private String noPerm;
     private String wrongCommand;
@@ -25,13 +25,14 @@ public class SpawnerGiveCommand implements CommandExecutor {
     private String wrongAmount;
     private String inventoryFull;
     private String invalidType;
-    private String mobNameColor;
+    private String displayName;
     private List<String> lore;
     private boolean enableLore;
     private String successSender;
     private String successTarget;
 
     public SpawnerGiveCommand(MineableSpawners plugin) {
+        this.plugin = plugin;
         FileConfiguration config = plugin.getConfig();
         requirePerm = config.getBoolean("spawnergive.require-permission");
         noPerm = config.getString("spawnergive.no-permission");
@@ -40,7 +41,7 @@ public class SpawnerGiveCommand implements CommandExecutor {
         wrongAmount = config.getString("spawnergive.wrong-amount");
         inventoryFull = config.getString("spawnergive.insufficient-space");
         invalidType = config.getString("spawnergive.invalid-type");
-        mobNameColor = config.getString("mob-name-color");
+        displayName = config.getString("displayname");
         lore = config.getStringList("lore");
         enableLore = config.getBoolean("enable-lore");
         successSender = config.getString("spawnergive.success-sender");
@@ -67,9 +68,9 @@ public class SpawnerGiveCommand implements CommandExecutor {
             return true;
         }
 
-        String type = args[1].toLowerCase();
+        EntityType entityType;
         try {
-            EntityType.valueOf(type.toUpperCase());
+            entityType = EntityType.valueOf(args[1].toUpperCase());
         } catch (IllegalArgumentException e) {
             StringBuilder str = new StringBuilder();
             for (EntityType entity : EntityType.values()) {
@@ -82,7 +83,7 @@ public class SpawnerGiveCommand implements CommandExecutor {
 
         int amount = 0;
         try {
-            amount = Integer.valueOf(args[2]);
+            amount = Integer.parseInt(args[2]);
         } catch (NumberFormatException e) {
             sender.sendMessage(Chat.format(wrongAmount));
             return true;
@@ -97,8 +98,8 @@ public class SpawnerGiveCommand implements CommandExecutor {
         ItemMeta meta = item.getItemMeta();
         item.setAmount(amount);
 
-        String mobFormatted = type.substring(0, 1).toUpperCase() + type.substring(1).toLowerCase();
-        meta.setDisplayName(Chat.format("&8[" + mobNameColor + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted)));
+        String mobFormatted = Chat.uppercaseStartingLetters(entityType.name());
+        meta.setDisplayName(Chat.format(displayName.replace("%mob%", mobFormatted)));
         List<String> newLore = new ArrayList<>();
         if (lore != null && enableLore) {
             for (String line : lore) {
@@ -106,8 +107,8 @@ public class SpawnerGiveCommand implements CommandExecutor {
             }
             meta.setLore(newLore);
         }
-
         item.setItemMeta(meta);
+        item = plugin.getNmsHandler().setType(item, entityType);
 
         target.getInventory().addItem(item);
         sender.sendMessage(Chat.format(successSender.replace("%mob%", mobFormatted).replace("%target%", target.getName()).replace("%amount%", amount + "")));
