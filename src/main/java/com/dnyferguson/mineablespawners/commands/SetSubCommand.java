@@ -14,9 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class SpawnerCommand implements CommandExecutor {
-
-    private boolean requirePerm;
+public class SetSubCommand implements CommandExecutor {
     private String noPerm;
     private String wrongCommand;
     private boolean requireIndividualPerm;
@@ -28,9 +26,8 @@ public class SpawnerCommand implements CommandExecutor {
     private List<String> worlds;
     private String blacklisted;
 
-    public SpawnerCommand(MineableSpawners plugin) {
+    public SetSubCommand(MineableSpawners plugin) {
         FileConfiguration config = plugin.getConfig();
-        requirePerm = config.getBoolean("spawner.require-permission");
         noPerm = config.getString("spawner.no-permission");
         wrongCommand = config.getString("spawner.wrong-command");
         requireIndividualPerm = config.getBoolean("spawner.require-individual-permission");
@@ -57,18 +54,6 @@ public class SpawnerCommand implements CommandExecutor {
 
         if (worlds.contains(player.getWorld().getName())) {
             player.sendMessage(Chat.format(blacklisted));
-            return true;
-        }
-
-        if (requirePerm) {
-            if (!player.hasPermission("mineablespawners.spawner")) {
-                player.sendMessage(Chat.format(noPerm));
-                return true;
-            }
-        }
-
-        if (args.length < 1) {
-            player.sendMessage(Chat.format(wrongCommand));
             return true;
         }
 
