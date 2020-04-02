@@ -9,10 +9,10 @@
 # GLOBAL
 #
 
-# Change the mob name color in the item name
-mob-name-color: '&e'
+# Change the spawner displayname. Available placeholder %mob% => mob name
+displayname: '&e%mob% &fSpawner'
 
-# You can set the lore to anything you want as the plugin does not use it for its functioning.
+# Change the spawner lore. Available placeholder %mob% => mob name
 lore:
   - '&aPlace this down for'
   - '&aa %mob% Spawner.'
@@ -136,8 +136,14 @@ mining:
   # Message when it breaks because they dont meet a requirement
   still-break-message: '&cYou did not meet all the criterias to drop the spawner.'
 
-  # Set a percent change to drop, from 0.00 (0%) to 1.00 (100%)
+  # Set a percent chance to drop, from 0.00 (0%) to 1.00 (100%)
   drop-chance: 1.0
+
+  # Should a spawner be dropped when exploded
+  drop-on-explode: true
+
+  # Set the percent chance a spawner will drop when blown up
+  drop-on-explode-chance: 100
 
 
 #
