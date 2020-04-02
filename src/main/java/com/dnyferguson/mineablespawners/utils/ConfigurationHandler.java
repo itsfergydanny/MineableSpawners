@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ConfigurationHandler {
+    private MineableSpawners plugin;
+
     private Map<String, Map<String, String>> messages = new HashMap<>();
     private Map<String, Map<String, Boolean>> booleans = new HashMap<>();
     private Map<String, Map<String, List<String>>> lists = new HashMap<>();
@@ -16,11 +18,22 @@ public class ConfigurationHandler {
     private Map<String, Map<String, Integer>> integers = new HashMap<>();
 
     public ConfigurationHandler(MineableSpawners plugin) {
+        this.plugin = plugin;
         FileConfiguration config = plugin.getConfig();
-        reload(config);
+        firstTime(config);
     }
 
-    public void reload(FileConfiguration config) {
+    public void firstTime(FileConfiguration config) {
+        loadSections(config);
+    }
+
+    public void reload() {
+        plugin.reloadConfig();
+        FileConfiguration config = plugin.getConfig();
+        loadSections(config);
+    }
+
+    private void loadSections(FileConfiguration config) {
         globalSection(config);
         mainSection(config);
         giveSection(config);
@@ -170,11 +183,11 @@ public class ConfigurationHandler {
 
         ConfigurationSection section = config.getConfigurationSection("main");
 
-        msgs.put("title", section.getString("helpmessage.title"));
-        msgs.put("give", section.getString("helpmessage.give"));
-        msgs.put("set", section.getString("helpmessage.set"));
-        msgs.put("types", section.getString("helpmessage.types"));
-        msgs.put("reload", section.getString("helpmessage.reload"));
+        msgs.put("title", section.getString("help-message.title"));
+        msgs.put("give", section.getString("help-message.give"));
+        msgs.put("set", section.getString("help-message.set"));
+        msgs.put("types", section.getString("help-message.types"));
+        msgs.put("reload", section.getString("help-message.reload"));
 
         messages.put("main", msgs);
     }
@@ -235,8 +248,8 @@ public class ConfigurationHandler {
 
         bools.put("require-permission", section.getBoolean("require-permission"));
 
-        messages.put("set", msgs);
-        booleans.put("set", bools);
+        messages.put("types", msgs);
+        booleans.put("types", bools);
     }
 
     public List<String> getList(String section, String key) {

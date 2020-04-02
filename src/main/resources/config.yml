@@ -21,10 +21,10 @@ main:
   # The help message will only show the commands a player has access to.
   help-message:
     title: '&eMineableSpawners:'
-    give: '&c/mineablespawners give <player> <type> <amount> &7(Give a player a spawner)'
+    give: '&f/mineablespawners give <player> <type> <amount> &7(Give a player a spawner)'
     set: '&f/mineablespawners set <type> &7(Set the type of the spawner you are looking at)'
-    types: '&7/mineablespawners types'
-    reload: '&4/mineablespawners reload &7(Reloads configuration)'
+    types: '&f/mineablespawners types &7(List available mob types)'
+    reload: '&f/mineablespawners reload &7(Reloads configuration)'
 
 #
 # /mineablespawners give command
