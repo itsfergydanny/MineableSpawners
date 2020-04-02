@@ -36,12 +36,18 @@ public class ConfigurationHandler {
     private void placingSection(FileConfiguration config) {
         Map<String, String> msgs = new HashMap<>();
         Map<String, Boolean> bools = new HashMap<>();
+        Map<String, List<String>> lsts = new HashMap<>();
         ConfigurationSection section = config.getConfigurationSection("placing");
 
         bools.put("log", section.getBoolean("log"));
 
+        msgs.put("blacklisted", section.getString("messages.blacklisted"));
+
+        lsts.put("blacklisted-worlds", section.getStringList("blacklisted-worlds"));
+
         messages.put("placing", msgs);
         booleans.put("placing", bools);
+        lists.put("placing", lsts);
     }
 
     private void miningSection(FileConfiguration config) {
@@ -87,6 +93,7 @@ public class ConfigurationHandler {
         Map<String, String> msgs = new HashMap<>();
         Map<String, Boolean> bools = new HashMap<>();
         Map<String, Double> dbls = new HashMap<>();
+        Map<String, List<String>> lsts = new HashMap<>();
 
         ConfigurationSection section = config.getConfigurationSection("explode");
 
@@ -94,14 +101,18 @@ public class ConfigurationHandler {
 
         dbls.put("chance", section.getDouble("chance"));
 
+        lsts.put("blacklisted-worlds", section.getStringList("blacklisted-worlds"));
+
         messages.put("explode", msgs);
         booleans.put("explode", bools);
         doubles.put("explode", dbls);
+        lists.put("explode", lsts);
     }
 
     private void eggsSection(FileConfiguration config) {
         Map<String, String> msgs = new HashMap<>();
         Map<String, Boolean> bools = new HashMap<>();
+        Map<String, List<String>> lsts = new HashMap<>();
 
         ConfigurationSection section = config.getConfigurationSection("eggs");
 
@@ -109,12 +120,17 @@ public class ConfigurationHandler {
         msgs.put("no-individual-permission", section.getString("messages.no-individual-permission"));
         msgs.put("already-type", section.getString("messages.already-type"));
         msgs.put("success", section.getString("messages.success"));
+        msgs.put("blacklisted", section.getString("messages.blacklisted"));
 
         bools.put("require-permission", section.getBoolean("require-permission"));
         bools.put("require-individual-permission", section.getBoolean("require-individual-permission"));
 
+        lsts.put("blacklisted-worlds", section.getStringList("blacklisted-worlds"));
+
         messages.put("eggs", msgs);
         booleans.put("eggs", bools);
+        lists.put("eggs", lsts);
+
     }
 
     private void anvilSection(FileConfiguration config) {

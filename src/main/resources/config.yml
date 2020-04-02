@@ -1,5 +1,5 @@
 #
-# Plugin by fergydanny (https://sysadamant.com)
+# Plugin by fergydanny (https://sysadamant.com). Check out my other plugins at https://www.spigotmc.org/resources/authors/fergydanny.25236/
 #
 
 #
@@ -89,14 +89,18 @@ anvil:
 eggs:
   # Whether or not to require the permission "mineablespawners.eggchange" to change a spawner type with a spawn egg.
   require-permission: true
-    # Whether or not to require the permission "mineablespawners.eggchange.<type>" to change a spawner type with a spawn egg.
-    require-individual-permission: true
+  # Whether or not to require the permission "mineablespawners.eggchange.<type>" to change a spawner type with a spawn egg.
+  require-individual-permission: true
+  # Configure worlds in which players cant change spawners with eggs
+  blacklisted-worlds:
+    - 'worldname'
   messages:
     no-permission: '&cNo Permission.'
     no-individual-permission: '&cYou do not have permission to change the spawner to that type.'
     already-type: '&cThat spawner is already of this type.'
     # Here you can use the placeholders: %from% => mob its changing from, %to% => mob its changing to.
     success: '&aYou have successfully changed the spawner from %from% to %to%!'
+    blacklisted: '&cYou cant do that in this world.'
 
 #
 # Exploding spawners
@@ -105,6 +109,9 @@ explode:
   drop: true
   # The chance it will drop in percentage from 0-100
   chance: 100
+  # Configure worlds spawners will not drop when exploded
+  blacklisted-worlds:
+    - 'worldname'
 
 #
 # Mining spawners
@@ -150,3 +157,8 @@ mining:
 placing:
   # Should the plugin log in console every time a player places a spawner?
   log: true
+  # Configure worlds players will not be able to place spawners in.
+  blacklisted-worlds:
+    - 'worldname'
+  messages:
+    blacklisted: '&cYou cant do that in this world.'

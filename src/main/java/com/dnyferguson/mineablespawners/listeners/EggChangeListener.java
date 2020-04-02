@@ -39,6 +39,11 @@ public class EggChangeListener implements Listener {
             return;
         }
 
+        if (plugin.getConfigurationHandler().getList("eggs", "blacklisted-worlds").contains(player.getWorld().getName())) {
+            player.sendMessage(plugin.getConfigurationHandler().getMessage("eggs", "blacklisted"));
+            return;
+        }
+
         if (plugin.getConfigurationHandler().getBoolean("eggs", "require-permission")) {
             if (!player.hasPermission("mineablespawners.eggchange")) {
                 e.setCancelled(true);
