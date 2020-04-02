@@ -11,14 +11,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 
 public class AnvilRenameListener implements Listener {
-
-  private boolean noAnvil;
-  private String noAnvilMessage;
+  private MineableSpawners plugin;
 
   public AnvilRenameListener(MineableSpawners plugin) {
-    FileConfiguration config = plugin.getConfig();
-    noAnvil = config.getBoolean("prevent-anvil");
-    noAnvilMessage = config.getString("prevent-anvil-message");
+    this.plugin = plugin;
   }
 
   @EventHandler (ignoreCancelled = true)
@@ -35,12 +31,12 @@ public class AnvilRenameListener implements Listener {
       return;
     }
 
-    if (!noAnvil) {
+    if (!plugin.getConfigurationHandler().getBoolean("anvil", "prevent-anvil")) {
       return;
     }
 
     Player player = (Player) e.getWhoClicked();
     e.setCancelled(true);
-    player.sendMessage(Chat.format(noAnvilMessage));
+    player.sendMessage(plugin.getConfigurationHandler().getMessage("anvil", "prevented"));
   }
 }
