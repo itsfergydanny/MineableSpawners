@@ -1,25 +1,27 @@
 package com.dnyferguson.mineablespawners;
 
-import com.dnyferguson.mineablespawners.commands.SpawnerCommand;
-import com.dnyferguson.mineablespawners.commands.SpawnerGiveCommand;
+import com.dnyferguson.mineablespawners.commands.MineableSpawnersCommand;
 import com.dnyferguson.mineablespawners.listeners.*;
 import com.dnyferguson.mineablespawners.nms.*;
+import com.dnyferguson.mineablespawners.utils.ConfigurationHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MineableSpawners extends JavaPlugin {
+    private ConfigurationHandler configurationHandler;
     private NMS_Handler nmsHandler;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
 
+        configurationHandler = new ConfigurationHandler(this);
+
         checkServerVersion();
 
-        getCommand("spawner").setExecutor(new SpawnerCommand(this));
-        getCommand("spawnergive").setExecutor(new SpawnerGiveCommand(this));
+        getCommand("mineablespawners").setExecutor(new MineableSpawnersCommand(this));
 
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new BlockBreakListener(this), this);
@@ -82,6 +84,10 @@ public final class MineableSpawners extends JavaPlugin {
 
         nmsHandler = new NMS_1_15();
         System.out.println("[MineableSpawners] Warning: Current server minecraft version not explicitly supported, use at your own risk!");
+    }
+
+    public ConfigurationHandler getConfigurationHandler() {
+        return configurationHandler;
     }
 
     public NMS_Handler getNmsHandler() {
