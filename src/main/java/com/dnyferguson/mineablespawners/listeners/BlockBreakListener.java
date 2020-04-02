@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BlockBreakListener implements Listener {
-
+    private MineableSpawners plugin;
     private boolean requirePerm;
     private String noPerm;
     private boolean requireSilk;
@@ -31,7 +31,7 @@ public class BlockBreakListener implements Listener {
     private String inventoryFull;
     private boolean stillBreak;
     private String stillBreakMsg;
-    private String mobNameColor;
+    private String displayName;
     private List<String> lore;
     private boolean enableLore;
     private double dropChance;
@@ -39,6 +39,7 @@ public class BlockBreakListener implements Listener {
     private String blacklisted;
 
     public BlockBreakListener(MineableSpawners plugin) {
+        this.plugin = plugin;
         FileConfiguration config = plugin.getConfig();
         requirePerm = config.getBoolean("mining.require-permission");
         noPerm = config.getString("mining.no-permission");
@@ -50,7 +51,7 @@ public class BlockBreakListener implements Listener {
         inventoryFull = config.getString("mining.inventory-full");
         stillBreak = config.getBoolean("mining.still-break");
         stillBreakMsg = config.getString("mining.still-break-message");
-        mobNameColor = config.getString("mob-name-color");
+        displayName = config.getString("displayname");
         lore = config.getStringList("lore");
         enableLore = config.getBoolean("enable-lore");
         dropChance = config.getDouble("mining.drop-chance");
@@ -108,10 +109,9 @@ public class BlockBreakListener implements Listener {
         CreatureSpawner spawner = (CreatureSpawner) block.getState();
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
-        String mob = spawner.getSpawnedType().toString().replace("_", " ");
-        String mobFormatted = mob.substring(0, 1).toUpperCase() + mob.substring(1).toLowerCase();
-        meta.setDisplayName(Chat.format("&8[" + mobNameColor + "%mob% &7Spawner&8]".replace("%mob%", mobFormatted)));
+        String mobFormatted = Chat.uppercaseStartingLetters(spawner.getSpawnedType().toString());
 
+        meta.setDisplayName(Chat.format(displayName.replace("%mob%", mobFormatted)));
         List<String> newLore = new ArrayList<>();
         if (lore != null && enableLore) {
             for (String line : lore) {
@@ -119,8 +119,9 @@ public class BlockBreakListener implements Listener {
             }
             meta.setLore(newLore);
         }
-
         item.setItemMeta(meta);
+
+        item = plugin.getNmsHandler().setType(item, spawner.getSpawnedType());
 
         if (dropChance != 1) {
             double random = Math.random();
