@@ -17,26 +17,14 @@ import java.util.List;
 
 public class SpawnerExplodeListener implements Listener {
     private MineableSpawners plugin;
-    private boolean dropOnExplode;
-    private double dropChance;
-    private String displayName;
-    private List<String> lore;
-    private boolean enableLore;
-
 
     public SpawnerExplodeListener(MineableSpawners plugin) {
         this.plugin = plugin;
-        FileConfiguration config = plugin.getConfig();
-        dropOnExplode = config.getBoolean("mining.drop-on-explode");
-        dropChance = config.getDouble("mining.drop-on-explode-chance")/100;
-        displayName = config.getString("displayname");
-        lore = config.getStringList("lore");
-        enableLore = config.getBoolean("enable-lore");
     }
 
     @EventHandler (ignoreCancelled = true)
     public void onSpawnerExplode(EntityExplodeEvent e) {
-        if (!dropOnExplode) {
+        if (!plugin.getConfigurationHandler().getBoolean("explode", "drop")) {
             return;
         }
 
@@ -44,6 +32,8 @@ public class SpawnerExplodeListener implements Listener {
             if (!block.getType().equals(Material.SPAWNER)) {
                 continue;
             }
+
+            double dropChance = plugin.getConfigurationHandler().getDouble("explode", "chance");
 
             if (dropChance != 1) {
                 double random = Math.random();
@@ -58,10 +48,10 @@ public class SpawnerExplodeListener implements Listener {
             ItemMeta meta = item.getItemMeta();
             String mobFormatted = Chat.uppercaseStartingLetters(spawner.getSpawnedType().toString());
 
-            meta.setDisplayName(Chat.format(displayName.replace("%mob%", mobFormatted)));
+            meta.setDisplayName(plugin.getConfigurationHandler().getMessage("global", "name").replace("%mob%", mobFormatted));
             List<String> newLore = new ArrayList<>();
-            if (lore != null && enableLore) {
-                for (String line : lore) {
+            if (plugin.getConfigurationHandler().getList("global", "lore") != null && plugin.getConfigurationHandler().getBoolean("global", "lore-enabled")) {
+                for (String line : plugin.getConfigurationHandler().getList("global", "lore")) {
                     newLore.add(Chat.format(line).replace("%mob%", mobFormatted));
                 }
                 meta.setLore(newLore);
