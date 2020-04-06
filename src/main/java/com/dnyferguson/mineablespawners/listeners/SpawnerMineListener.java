@@ -181,7 +181,6 @@ public class SpawnerMineListener implements Listener {
         }
 
         double random = Math.random();
-        System.out.println("DEBUG: random = " + random + ", DROP CHANCE = " + dropChance);
         if (random >= dropChance) {
             return;
         }
