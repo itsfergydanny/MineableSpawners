@@ -30,93 +30,109 @@ public class SpawnerMineListener implements Listener {
 
     @EventHandler (priority = EventPriority.MONITOR)
     public void onSpawnerMine(BlockBreakEvent e) {
-        Block block = e.getBlock();
-        Location loc = block.getLocation();
-        Material material = block.getType();
+        try {
+            Block block = e.getBlock();
+            Location loc = block.getLocation();
+            Material material = block.getType();
 
-        if (material != Material.SPAWNER || e.isCancelled()) {
-            return;
-        }
-
-        Player player = e.getPlayer();
-
-        if (plugin.getConfigurationHandler().getList("mining", "blacklisted-worlds").contains(player.getWorld().getName())) {
-            player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "blacklisted"));
-            return;
-        }
-
-        if (!plugin.getConfigurationHandler().getBoolean("mining", "drop-exp") || minedSpawners.contains(loc)) {
-            e.setExpToDrop(0);
-        }
-
-        if (plugin.getConfigurationHandler().getBoolean("mining", "require-permission")) {
-            if (!player.hasPermission("mineablespawners.mine")) {
-                handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "no-permission"), plugin.getConfigurationHandler().getMessage("minings", "requirements.permission"));
+            if (material != Material.SPAWNER || e.isCancelled()) {
                 return;
             }
-        }
 
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+            Player player = e.getPlayer();
 
-        if (plugin.getConfigurationHandler().getBoolean("mining", "require-silktouch") && !player.hasPermission("mineablespawners.nosilk")) {
-            int silkTouchLevel = 0;
-            if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
-                silkTouchLevel = itemInHand.getEnchantmentLevel(Enchantment.SILK_TOUCH);
+            if (plugin.getConfigurationHandler().getList("mining", "blacklisted-worlds").contains(player.getWorld().getName())) {
+                player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "blacklisted"));
+                return;
             }
-            if (plugin.getConfigurationHandler().getBoolean("mining", "require-silktouch-level")) {
-                int requiredLevel = plugin.getConfigurationHandler().getInteger("mining", "required-level");
-                if (silkTouchLevel < requiredLevel) {
-                    handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "not-level-required"), plugin.getConfigurationHandler().getMessage("minings", "requirements.silktouch-level"));
-                    return;
-                }
-            } else {
-                if (silkTouchLevel != 1) {
-                    handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "no-silktouch"), plugin.getConfigurationHandler().getMessage("minings", "requirements.silktouch"));
+
+            if (!plugin.getConfigurationHandler().getBoolean("mining", "drop-exp") || minedSpawners.contains(loc)) {
+                e.setExpToDrop(0);
+            }
+
+            if (plugin.getConfigurationHandler().getBoolean("mining", "require-permission")) {
+                if (!player.hasPermission("mineablespawners.mine")) {
+                    handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "no-permission"), plugin.getConfigurationHandler().getMessage("mining", "requirements.permission"));
                     return;
                 }
             }
-        }
 
-        CreatureSpawner spawner = (CreatureSpawner) block.getState();
-        ItemStack item = new ItemStack(material);
-        ItemMeta meta = item.getItemMeta();
-        String mobFormatted = Chat.uppercaseStartingLetters(spawner.getSpawnedType().toString());
+            ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
-        meta.setDisplayName(plugin.getConfigurationHandler().getMessage("global", "name").replace("%mob%", mobFormatted));
-        List<String> newLore = new ArrayList<>();
-        if (plugin.getConfigurationHandler().getList("global", "lore") != null && plugin.getConfigurationHandler().getBoolean("global", "lore-enabled")) {
-            for (String line : plugin.getConfigurationHandler().getList("global", "lore")) {
-                newLore.add(Chat.format(line).replace("%mob%", mobFormatted));
+            if (plugin.getConfigurationHandler().getBoolean("mining", "require-silktouch") && !player.hasPermission("mineablespawners.nosilk")) {
+                int silkTouchLevel = 0;
+                if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+                    silkTouchLevel = itemInHand.getEnchantmentLevel(Enchantment.SILK_TOUCH);
+                }
+                if (plugin.getConfigurationHandler().getBoolean("mining", "require-silktouch-level")) {
+                    int requiredLevel = plugin.getConfigurationHandler().getInteger("mining", "required-level");
+                    if (silkTouchLevel < requiredLevel) {
+                        handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "not-level-required"), plugin.getConfigurationHandler().getMessage("mining", "requirements.silktouch-level"));
+                        return;
+                    }
+                } else {
+                    if (silkTouchLevel != 1) {
+                        handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "no-silktouch"), plugin.getConfigurationHandler().getMessage("mining", "requirements.silktouch"));
+                        return;
+                    }
+                }
             }
-            meta.setLore(newLore);
-        }
-        item.setItemMeta(meta);
 
-        item = plugin.getNmsHandler().setType(item, spawner.getSpawnedType());
+            CreatureSpawner spawner = (CreatureSpawner) block.getState();
+            String type = spawner.getSpawnedType().name();
 
-        double dropChance = plugin.getConfigurationHandler().getDouble("mining", "chance");
+            if (plugin.getConfigurationHandler().getBoolean("mining", "require-individual-permission")) {
+                if (!player.hasPermission("mineablespawners.mine." + type.toLowerCase())) {
+                    System.out.println("DEBUG 1 = " + plugin.getConfigurationHandler().getMessage("mining", "no-individual-permission"));
+                    System.out.println("DEBUG 2 = " + plugin.getConfigurationHandler().getMessage("mining", "requirements.individual-permission"));
+                    handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "no-individual-permission"), plugin.getConfigurationHandler().getMessage("mining", "requirements.individual-permission"));
+                    return;
+                }
+            }
 
-        if (dropChance != 1) {
-            double random = Math.random();
-            if (random >= dropChance) {
+            ItemStack item = new ItemStack(material);
+            ItemMeta meta = item.getItemMeta();
+            String mobFormatted = Chat.uppercaseStartingLetters(spawner.getSpawnedType().toString());
+
+            meta.setDisplayName(plugin.getConfigurationHandler().getMessage("global", "name").replace("%mob%", mobFormatted));
+            List<String> newLore = new ArrayList<>();
+            if (plugin.getConfigurationHandler().getList("global", "lore") != null && plugin.getConfigurationHandler().getBoolean("global", "lore-enabled")) {
+                for (String line : plugin.getConfigurationHandler().getList("global", "lore")) {
+                    newLore.add(Chat.format(line).replace("%mob%", mobFormatted));
+                }
+                meta.setLore(newLore);
+            }
+            item.setItemMeta(meta);
+
+            item = plugin.getNmsHandler().setType(item, spawner.getSpawnedType());
+
+            double dropChance = plugin.getConfigurationHandler().getDouble("mining", "chance");
+
+            if (dropChance != 1) {
+                double random = Math.random();
+                if (random >= dropChance) {
+                    return;
+                }
+            }
+
+            minedSpawners.add(loc);
+
+            if (plugin.getConfigurationHandler().getBoolean("mining", "drop-to-inventory")) {
+                if (player.getInventory().firstEmpty() == -1) {
+                    e.setCancelled(true);
+                    player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "inventory-full"));
+                    return;
+                }
+                player.getInventory().addItem(item);
+                block.getDrops().clear();
                 return;
             }
+
+            loc.getWorld().dropItemNaturally(loc, item);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            e.setCancelled(true);
         }
-
-        minedSpawners.add(loc);
-
-        if (plugin.getConfigurationHandler().getBoolean("mining", "drop-to-inventory")) {
-            if (player.getInventory().firstEmpty() == -1) {
-                e.setCancelled(true);
-                player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "inventory-full"));
-                return;
-            }
-            player.getInventory().addItem(item);
-            block.getDrops().clear();
-            return;
-        }
-
-        loc.getWorld().dropItemNaturally(loc, item);
     }
 
     private void handleStillBreak(BlockBreakEvent e, Player player, String msg, String reason) {
