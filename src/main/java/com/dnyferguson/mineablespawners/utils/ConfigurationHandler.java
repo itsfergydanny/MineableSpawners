@@ -85,6 +85,7 @@ public class ConfigurationHandler {
         msgs.put("requirements.silktouch-level", section.getString("requirements.silktouch-level"));
 
         lsts.put("blacklisted-worlds", section.getStringList("blacklisted-worlds"));
+        lsts.put("perm-based-chances", section.getStringList("perm-based-chances"));
 
         bools.put("drop-exp", section.getBoolean("drop-exp"));
         bools.put("require-permission", section.getBoolean("require-permission"));
@@ -93,6 +94,7 @@ public class ConfigurationHandler {
         bools.put("drop-to-inventory", section.getBoolean("drop-to-inventory"));
         bools.put("still-break", section.getBoolean("still-break"));
         bools.put("require-individual-permission", section.getBoolean("require-individual-permission"));
+        bools.put("use-perm-based-chances", section.getBoolean("use-perm-based-chances"));
 
         ints.put("required-level", section.getInt("required-level"));
 

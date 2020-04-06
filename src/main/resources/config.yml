@@ -128,6 +128,12 @@ mining:
   required-level: 2
   # The chance it will drop in percentage from 0-100
   chance: 100
+  # Should we instead use perm based chances?
+  use-perm-based-chances: false
+  # Configure them from best (top) to worse (bottom). Format: <permission>:<% chance from 0-100>
+  perm-based-chances:
+    - 'minechance.1:100' # 100% chance
+    - 'minechance.2:50' # 50% chance
   # Should the drop go straight to the players inventory?
   drop-to-inventory: true
   # Should exp be dropped when mining spawners.

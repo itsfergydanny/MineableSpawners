@@ -32,7 +32,7 @@ public class SpawnerExplodeListener implements Listener {
                 continue;
             }
 
-            double dropChance = plugin.getConfigurationHandler().getDouble("explode", "chance");
+            double dropChance = plugin.getConfigurationHandler().getDouble("explode", "chance")/100;
 
             if (dropChance != 1) {
                 double random = Math.random();
