@@ -71,7 +71,7 @@ types:
   require-permission: true
   messages:
     no-permission: '&cNo Permission.'
-    title: '&eAvailable Types:'
+    title: '&eAvailable Types: '
     # This just sets how the mobs are listed. Available placeholder: %mob%
     entries: '&f%mob%&7,'
 

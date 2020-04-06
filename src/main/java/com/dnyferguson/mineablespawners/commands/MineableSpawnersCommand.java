@@ -59,7 +59,7 @@ public class MineableSpawnersCommand implements CommandExecutor {
         }
 
         if (subCommand.equals("types") && args.length == 1) {
-            if (!plugin.getConfigurationHandler().getBoolean("type", "require-permission")) {
+            if (!plugin.getConfigurationHandler().getBoolean("types", "require-permission")) {
                 typesSubCommand.execute(plugin, sender);
                 return true;
             }
