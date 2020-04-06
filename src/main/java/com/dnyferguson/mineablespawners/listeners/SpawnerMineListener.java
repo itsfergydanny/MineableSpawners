@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,10 +16,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SpawnerMineListener implements Listener {
     private MineableSpawners plugin;
+    private Set<Location> minedSpawners = new HashSet<>();
 
     public SpawnerMineListener(MineableSpawners plugin) {
         this.plugin = plugin;
@@ -29,6 +31,7 @@ public class SpawnerMineListener implements Listener {
     @EventHandler (priority = EventPriority.MONITOR)
     public void onSpawnerMine(BlockBreakEvent e) {
         Block block = e.getBlock();
+        Location loc = block.getLocation();
         Material material = block.getType();
 
         if (material != Material.SPAWNER || e.isCancelled()) {
@@ -42,7 +45,7 @@ public class SpawnerMineListener implements Listener {
             return;
         }
 
-        if (!plugin.getConfigurationHandler().getBoolean("mining", "drop-exp")) {
+        if (!plugin.getConfigurationHandler().getBoolean("mining", "drop-exp") || minedSpawners.contains(loc)) {
             e.setExpToDrop(0);
         }
 
@@ -100,6 +103,8 @@ public class SpawnerMineListener implements Listener {
             }
         }
 
+        minedSpawners.add(loc);
+
         if (plugin.getConfigurationHandler().getBoolean("mining", "drop-to-inventory")) {
             if (player.getInventory().firstEmpty() == -1) {
                 e.setCancelled(true);
@@ -111,7 +116,6 @@ public class SpawnerMineListener implements Listener {
             return;
         }
 
-        Location loc = block.getLocation();
         loc.getWorld().dropItemNaturally(loc, item);
     }
 
