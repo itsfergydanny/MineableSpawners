@@ -2,6 +2,7 @@ package com.dnyferguson.mineablespawners.commands;
 
 import com.dnyferguson.mineablespawners.MineableSpawners;
 import com.dnyferguson.mineablespawners.utils.Chat;
+import com.dnyferguson.mineablespawners.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -45,7 +46,7 @@ public class GiveSubCommand {
             return;
         }
 
-        ItemStack item = new ItemStack(Material.SPAWNER);
+        ItemStack item = new ItemStack(XMaterial.SPAWNER.parseMaterial());
         ItemMeta meta = item.getItemMeta();
         item.setAmount(amount);
 

@@ -2,6 +2,7 @@ package com.dnyferguson.mineablespawners.listeners;
 
 import com.dnyferguson.mineablespawners.MineableSpawners;
 import com.dnyferguson.mineablespawners.utils.Chat;
+import com.dnyferguson.mineablespawners.utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
@@ -28,7 +29,7 @@ public class SpawnerExplodeListener implements Listener {
         }
 
         for (Block block : e.blockList()) {
-            if (!block.getType().equals(Material.SPAWNER)) {
+            if (!block.getType().equals(XMaterial.SPAWNER.parseMaterial())) {
                 continue;
             }
 
@@ -43,7 +44,7 @@ public class SpawnerExplodeListener implements Listener {
 
             CreatureSpawner spawner = (CreatureSpawner) block.getState();
 
-            ItemStack item = new ItemStack(Material.SPAWNER);
+            ItemStack item = new ItemStack(XMaterial.SPAWNER.parseMaterial());
             ItemMeta meta = item.getItemMeta();
             String mobFormatted = Chat.uppercaseStartingLetters(spawner.getSpawnedType().toString());
 
