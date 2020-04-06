@@ -21,7 +21,7 @@ public class GiveSubCommand {
     public void execute(MineableSpawners plugin, CommandSender sender, String target, String type, String amt) {
         Player targetPlayer = Bukkit.getPlayer(target);
         if (target == null) {
-            sender.sendMessage(plugin.getConfigurationHandler().getMessage("give", "player-does-not-exist"));
+            plugin.getConfigurationHandler().sendMessage("give", "player-does-not-exist", sender);
             return;
         }
 
@@ -29,7 +29,7 @@ public class GiveSubCommand {
         try {
             entityType = EntityType.valueOf(type.toUpperCase());
         } catch (IllegalArgumentException e) {
-            sender.sendMessage(plugin.getConfigurationHandler().getMessage("give", "invalid-type"));
+            plugin.getConfigurationHandler().sendMessage("give", "invalid-type", sender);
             return;
         }
 
@@ -37,12 +37,12 @@ public class GiveSubCommand {
         try {
             amount = Integer.parseInt(amt);
         } catch (NumberFormatException e) {
-            sender.sendMessage(plugin.getConfigurationHandler().getMessage("give", "invalid-amount"));
+            plugin.getConfigurationHandler().sendMessage("give", "invalid-amount", sender);
             return;
         }
 
         if (targetPlayer.getInventory().firstEmpty() == -1) {
-            sender.sendMessage(plugin.getConfigurationHandler().getMessage("give", "inventory-full"));
+            plugin.getConfigurationHandler().sendMessage("give", "inventory-full", sender);
             return;
         }
 
@@ -63,7 +63,7 @@ public class GiveSubCommand {
         item = plugin.getNmsHandler().setType(item, entityType);
 
         targetPlayer.getInventory().addItem(item);
-        sender.sendMessage(plugin.getConfigurationHandler().getMessage("give", "success").replace("%mob%", mobFormatted).replace("%target%", targetPlayer.getName()).replace("%amount%", amount + ""));
+        plugin.getConfigurationHandler().getMessage("give", "success").replace("%mob%", mobFormatted).replace("%target%", targetPlayer.getName()).replace("%amount%", amount + "");
         targetPlayer.sendMessage(plugin.getConfigurationHandler().getMessage("give", "received").replace("%mob%", mobFormatted).replace("%target%", targetPlayer.getName()).replace("%amount%", amount + ""));
     }
 }
