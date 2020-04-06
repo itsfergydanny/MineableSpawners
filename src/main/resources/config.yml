@@ -117,6 +117,9 @@ explode:
 # Mining spawners
 #
 mining:
+  # Which tools should be used to mine spawners
+  tools:
+    - 'DIAMOND_PICKAXE'
   # Whether or not to require the permission "mineablespawners.mine" to mine a spawner.
   require-permission: true
   # Whether or not to require the permission "mineablespawners.mine.<type>" to mine a spawner.
@@ -142,8 +145,9 @@ mining:
   still-break: false
   # Here you can translate the requirements that will be shown when the still break message is sent.
   requirements:
-    permission: 'Not allowed to mine spawners.'
-    individual-permission: 'Not allowed to mine that type of spawner.'
+    wrong-tool: 'Wrong tool.'
+    permission: 'Not allowed to silk touch spawners.'
+    individual-permission: 'Not allowed to silk touch that type of spawner.'
     silktouch: 'Missing Silktouch'
     # Available placeholder: %level% => required level
     silktouch-level: 'Missing Silktouch level %level%'
@@ -151,6 +155,7 @@ mining:
   blacklisted-worlds:
     - 'worldname'
   messages:
+    wrong-tool: '&cYou do not have the tool required.'
     no-permission: '&cNo Permission.'
     no-individual-permission: '&cYou do not have permission to mine a spawner of that type.'
     blacklisted: '&cYou cant do that in this world.'
