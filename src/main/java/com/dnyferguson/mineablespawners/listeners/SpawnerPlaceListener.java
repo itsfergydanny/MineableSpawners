@@ -1,6 +1,7 @@
 package com.dnyferguson.mineablespawners.listeners;
 
 import com.dnyferguson.mineablespawners.MineableSpawners;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -32,8 +33,11 @@ public class SpawnerPlaceListener implements Listener {
         Player player = e.getPlayer();
 
         if (plugin.getConfigurationHandler().getList("placing", "blacklisted-worlds").contains(player.getWorld().getName())) {
-            player.sendMessage(plugin.getConfigurationHandler().getMessage("placing", "blacklisted"));
-            return;
+            if (!player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("mineablespawners.bypass")) {
+                player.sendMessage(plugin.getConfigurationHandler().getMessage("placing", "blacklisted"));
+                e.setCancelled(true);
+                return;
+            }
         }
 
         ItemStack placed = e.getItemInHand();

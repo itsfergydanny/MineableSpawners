@@ -2,6 +2,7 @@ package com.dnyferguson.mineablespawners.listeners;
 
 import com.dnyferguson.mineablespawners.MineableSpawners;
 import com.dnyferguson.mineablespawners.utils.Chat;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -12,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -34,26 +36,34 @@ public class SpawnerMineListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSpawnerMine(BlockBreakEvent e) {
         try {
             Block block = e.getBlock();
             Location loc = block.getLocation();
             Material material = block.getType();
 
-            if (material != Material.SPAWNER || e.isCancelled()) {
+            if (!material.equals(Material.SPAWNER)) {
                 return;
             }
 
+            CreatureSpawner spawner = (CreatureSpawner) block.getState();
+            String type = spawner.getSpawnedType().name();
+
             Player player = e.getPlayer();
+
+            if (!plugin.getConfigurationHandler().getBoolean("mining", "drop-exp") || minedSpawners.contains(loc)) {
+                e.setExpToDrop(0);
+            }
+
+            if (player.getGameMode().equals(GameMode.CREATIVE) || player.hasPermission("mineablespawners.bypass")) {
+                handleGivingSpawner(e, material, spawner, loc, player, block);
+                return;
+            }
 
             if (plugin.getConfigurationHandler().getList("mining", "blacklisted-worlds").contains(player.getWorld().getName())) {
                 player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "blacklisted"));
                 return;
-            }
-
-            if (!plugin.getConfigurationHandler().getBoolean("mining", "drop-exp") || minedSpawners.contains(loc)) {
-                e.setExpToDrop(0);
             }
 
             Material tool = player.getInventory().getItemInMainHand().getType();
@@ -91,9 +101,6 @@ public class SpawnerMineListener implements Listener {
                 }
             }
 
-            CreatureSpawner spawner = (CreatureSpawner) block.getState();
-            String type = spawner.getSpawnedType().name();
-
             if (plugin.getConfigurationHandler().getBoolean("mining", "require-individual-permission")) {
                 if (!player.hasPermission("mineablespawners.mine." + type.toLowerCase())) {
                     System.out.println("DEBUG 1 = " + plugin.getConfigurationHandler().getMessage("mining", "no-individual-permission"));
@@ -102,22 +109,6 @@ public class SpawnerMineListener implements Listener {
                     return;
                 }
             }
-
-            ItemStack item = new ItemStack(material);
-            ItemMeta meta = item.getItemMeta();
-            String mobFormatted = Chat.uppercaseStartingLetters(spawner.getSpawnedType().toString());
-
-            meta.setDisplayName(plugin.getConfigurationHandler().getMessage("global", "name").replace("%mob%", mobFormatted));
-            List<String> newLore = new ArrayList<>();
-            if (plugin.getConfigurationHandler().getList("global", "lore") != null && plugin.getConfigurationHandler().getBoolean("global", "lore-enabled")) {
-                for (String line : plugin.getConfigurationHandler().getList("global", "lore")) {
-                    newLore.add(Chat.format(line).replace("%mob%", mobFormatted));
-                }
-                meta.setLore(newLore);
-            }
-            item.setItemMeta(meta);
-
-            item = plugin.getNmsHandler().setType(item, spawner.getSpawnedType());
 
             double dropChance = 0;
             if (plugin.getConfigurationHandler().getBoolean("mining", "use-perm-based-chances") && permissionChances.size() > 0) {
@@ -143,24 +134,44 @@ public class SpawnerMineListener implements Listener {
                 return;
             }
 
-            minedSpawners.add(loc);
-
-            if (plugin.getConfigurationHandler().getBoolean("mining", "drop-to-inventory")) {
-                if (player.getInventory().firstEmpty() == -1) {
-                    e.setCancelled(true);
-                    player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "inventory-full"));
-                    return;
-                }
-                player.getInventory().addItem(item);
-                block.getDrops().clear();
-                return;
-            }
-
-            loc.getWorld().dropItemNaturally(loc, item);
+            handleGivingSpawner(e, material, spawner, loc, player, block);
         } catch (Exception ex) {
             ex.printStackTrace();
             e.setCancelled(true);
         }
+    }
+
+    private void handleGivingSpawner(BlockBreakEvent e, Material material, CreatureSpawner spawner, Location loc, Player player, Block block) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta meta = item.getItemMeta();
+        String mobFormatted = Chat.uppercaseStartingLetters(spawner.getSpawnedType().toString());
+
+        meta.setDisplayName(plugin.getConfigurationHandler().getMessage("global", "name").replace("%mob%", mobFormatted));
+        List<String> newLore = new ArrayList<>();
+        if (plugin.getConfigurationHandler().getList("global", "lore") != null && plugin.getConfigurationHandler().getBoolean("global", "lore-enabled")) {
+            for (String line : plugin.getConfigurationHandler().getList("global", "lore")) {
+                newLore.add(Chat.format(line).replace("%mob%", mobFormatted));
+            }
+            meta.setLore(newLore);
+        }
+        item.setItemMeta(meta);
+
+        item = plugin.getNmsHandler().setType(item, spawner.getSpawnedType());
+
+        minedSpawners.add(loc);
+
+        if (plugin.getConfigurationHandler().getBoolean("mining", "drop-to-inventory")) {
+            if (player.getInventory().firstEmpty() == -1) {
+                e.setCancelled(true);
+                player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "inventory-full"));
+                return;
+            }
+            player.getInventory().addItem(item);
+            block.getDrops().clear();
+            return;
+        }
+
+        loc.getWorld().dropItemNaturally(loc, item);
     }
 
     private void handleStillBreak(BlockBreakEvent e, Player player, String msg, String reason) {
