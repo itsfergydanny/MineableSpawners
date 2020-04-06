@@ -24,12 +24,20 @@ import java.util.Map;
 public class SpawnerPlaceListener implements Listener {
     private MineableSpawners plugin;
     private Map<EntityType, Double> prices = new HashMap<>();
+    private boolean allSamePrice = false;
+    private double globalPrice = 0;
+    private DecimalFormat df = new DecimalFormat("##.##");
 
     public SpawnerPlaceListener(MineableSpawners plugin) {
         this.plugin = plugin;
         for (String line : plugin.getConfigurationHandler().getList("placing", "prices")) {
             try {
                 String[] args = line.split(":");
+                if (args[0].equalsIgnoreCase("all")) {
+                    allSamePrice = true;
+                    globalPrice = Double.parseDouble(args[1]);
+                    break;
+                }
                 EntityType type = EntityType.valueOf(args[0].toUpperCase());
                 double price = Double.parseDouble(args[1]);
                 prices.put(type, price);
@@ -64,27 +72,56 @@ public class SpawnerPlaceListener implements Listener {
         try {
             EntityType type = plugin.getNmsHandler().getType(placed);
 
-            if (!bypassing && plugin.getEcon() != null && plugin.getConfigurationHandler().getBoolean("placing", "charge") && prices.containsKey(type)) {
-                DecimalFormat df = new DecimalFormat("##.##");
+            if (bypassing || plugin.getEcon() == null) {
+                handlePlacement(e, block, type, false, 0);
+                return;
+            }
 
-                if (!plugin.getEcon().withdrawPlayer(player, prices.get(type)).transactionSuccess()) {
-                    String missing = df.format(prices.get(type) - plugin.getEcon().getBalance(player));
-                    player.sendMessage(plugin.getConfigurationHandler().getMessage("placing", "not-enough-money").replace("%missing%", missing).replace("%cost%", prices.get(type).toString()));
-                    e.setCancelled(true);
-                    return;
+            if (!plugin.getConfigurationHandler().getBoolean("placing", "charge")) {
+                handlePlacement(e, block, type, false, 0);
+                return;
+            }
+
+            if (allSamePrice) {
+                if (!plugin.getEcon().withdrawPlayer(player, globalPrice).transactionSuccess()) {
+                    String missing = df.format(globalPrice - plugin.getEcon().getBalance(player));
+                    player.sendMessage(plugin.getConfigurationHandler().getMessage("placing", "not-enough-money").replace("%missing%", missing).replace("%cost%", globalPrice + ""));
                 }
 
-                player.sendMessage(plugin.getConfigurationHandler().getMessage("placing", "transaction-success").replace("%type%", Chat.uppercaseStartingLetters(type.name())).replace("%cost%", df.format(prices.get(type))).replace("%balance%", df.format(plugin.getEcon().getBalance(player))));
+                handlePlacement(e, block, type, true, globalPrice);
+                return;
             }
 
-            CreatureSpawner spawner = (CreatureSpawner) block.getState();
-            spawner.setSpawnedType(type);
-            spawner.update();
-
-            if (plugin.getConfigurationHandler().getBoolean("placing", "log")) {
-                Location loc = block.getLocation();
-                System.out.println("[MineableSpawners] Player " + e.getPlayer().getName() + " placed a " + type.name().toLowerCase() + " spawner at x:" + loc.getX() + ", y:" + loc.getY() + ", z:" + loc.getZ() + " (" + loc.getWorld().getName() + ")");
+            if (!prices.containsKey(type)) {
+                handlePlacement(e, block, type, false, 0);
+                return;
             }
+
+            if (!plugin.getEcon().withdrawPlayer(player, prices.get(type)).transactionSuccess()) {
+                String missing = df.format(prices.get(type) - plugin.getEcon().getBalance(player));
+                player.sendMessage(plugin.getConfigurationHandler().getMessage("placing", "not-enough-money").replace("%missing%", missing).replace("%cost%", prices.get(type).toString()));
+                e.setCancelled(true);
+                return;
+            }
+
+            handlePlacement(e, block, type, true, prices.get(type));
         } catch (NullPointerException|IllegalArgumentException ignored) {}
+    }
+
+    private void handlePlacement(BlockPlaceEvent e, Block block, EntityType type, boolean charged, double cost) {
+        Player player = e.getPlayer();
+
+        CreatureSpawner spawner = (CreatureSpawner) block.getState();
+        spawner.setSpawnedType(type);
+        spawner.update();
+
+        if (plugin.getConfigurationHandler().getBoolean("placing", "log")) {
+            Location loc = block.getLocation();
+            System.out.println("[MineableSpawners] Player " + e.getPlayer().getName() + " placed a " + type.name().toLowerCase() + " spawner at x:" + loc.getX() + ", y:" + loc.getY() + ", z:" + loc.getZ() + " (" + loc.getWorld().getName() + ")");
+        }
+
+        if (charged) {
+            player.sendMessage(plugin.getConfigurationHandler().getMessage("placing", "transaction-success").replace("%type%", Chat.uppercaseStartingLetters(type.name())).replace("%cost%", df.format(cost).replace("%balance%", df.format(plugin.getEcon().getBalance(player)))));
+        }
     }
 }

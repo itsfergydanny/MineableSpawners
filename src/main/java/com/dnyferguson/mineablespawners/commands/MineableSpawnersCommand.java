@@ -35,7 +35,7 @@ public class MineableSpawnersCommand implements CommandExecutor {
             }
 
             if (!sender.hasPermission("mineablespawners.give")) {
-                sender.sendMessage(plugin.getConfigurationHandler().getMessage("give", "no-permission"));
+                plugin.getConfigurationHandler().sendMessage("give", "no-permission", sender);
                 return true;
             }
 
@@ -50,7 +50,7 @@ public class MineableSpawnersCommand implements CommandExecutor {
             }
 
             if (!sender.hasPermission("mineablespawners.set")) {
-                sender.sendMessage(plugin.getConfigurationHandler().getMessage("set", "no-permission"));
+                plugin.getConfigurationHandler().sendMessage("set", "no-permission", sender);
                 return true;
             }
 
@@ -65,7 +65,7 @@ public class MineableSpawnersCommand implements CommandExecutor {
             }
 
             if (!sender.hasPermission("mineablespawners.types")) {
-                sender.sendMessage(plugin.getConfigurationHandler().getMessage("types", "no-permission"));
+                plugin.getConfigurationHandler().sendMessage("types", "no-permission", sender);
                 return true;
             }
 
