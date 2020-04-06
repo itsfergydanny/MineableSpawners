@@ -1,9 +1,8 @@
 package com.dnyferguson.mineablespawners.listeners;
 
 import com.dnyferguson.mineablespawners.MineableSpawners;
-import com.dnyferguson.mineablespawners.utils.Chat;
+import com.dnyferguson.mineablespawners.utils.XMaterial;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,14 +10,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 
 public class AnvilRenameListener implements Listener {
-
-  private boolean noAnvil;
-  private String noAnvilMessage;
+  private MineableSpawners plugin;
 
   public AnvilRenameListener(MineableSpawners plugin) {
-    FileConfiguration config = plugin.getConfig();
-    noAnvil = config.getBoolean("prevent-anvil");
-    noAnvilMessage = config.getString("prevent-anvil-message");
+    this.plugin = plugin;
   }
 
   @EventHandler (ignoreCancelled = true)
@@ -31,16 +26,16 @@ public class AnvilRenameListener implements Listener {
       return;
     }
 
-    if (e.getInventory().getType() != InventoryType.ANVIL || e.getCurrentItem().getType() != Material.SPAWNER) {
+    if (e.getInventory().getType() != InventoryType.ANVIL || e.getCurrentItem().getType() != XMaterial.SPAWNER.parseMaterial()) {
       return;
     }
 
-    if (!noAnvil) {
+    if (!plugin.getConfigurationHandler().getBoolean("anvil", "prevent-anvil")) {
       return;
     }
 
     Player player = (Player) e.getWhoClicked();
     e.setCancelled(true);
-    player.sendMessage(Chat.format(noAnvilMessage));
+    player.sendMessage(plugin.getConfigurationHandler().getMessage("anvil", "prevented"));
   }
 }
