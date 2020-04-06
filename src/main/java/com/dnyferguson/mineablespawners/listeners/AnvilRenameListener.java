@@ -1,6 +1,7 @@
 package com.dnyferguson.mineablespawners.listeners;
 
 import com.dnyferguson.mineablespawners.MineableSpawners;
+import com.dnyferguson.mineablespawners.utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,7 +26,7 @@ public class AnvilRenameListener implements Listener {
       return;
     }
 
-    if (e.getInventory().getType() != InventoryType.ANVIL || e.getCurrentItem().getType() != Material.SPAWNER) {
+    if (e.getInventory().getType() != InventoryType.ANVIL || e.getCurrentItem().getType() != XMaterial.SPAWNER.parseMaterial()) {
       return;
     }
 

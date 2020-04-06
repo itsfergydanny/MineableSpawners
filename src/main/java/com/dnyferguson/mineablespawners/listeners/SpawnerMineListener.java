@@ -2,6 +2,7 @@ package com.dnyferguson.mineablespawners.listeners;
 
 import com.dnyferguson.mineablespawners.MineableSpawners;
 import com.dnyferguson.mineablespawners.utils.Chat;
+import com.dnyferguson.mineablespawners.utils.XMaterial;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,7 +44,7 @@ public class SpawnerMineListener implements Listener {
             Location loc = block.getLocation();
             Material material = block.getType();
 
-            if (!material.equals(Material.SPAWNER)) {
+            if (!material.equals(XMaterial.SPAWNER.parseMaterial())) {
                 return;
             }
 

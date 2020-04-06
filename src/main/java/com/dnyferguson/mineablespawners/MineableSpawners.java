@@ -4,14 +4,17 @@ import com.dnyferguson.mineablespawners.commands.MineableSpawnersCommand;
 import com.dnyferguson.mineablespawners.listeners.*;
 import com.dnyferguson.mineablespawners.nms.*;
 import com.dnyferguson.mineablespawners.utils.ConfigurationHandler;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class MineableSpawners extends JavaPlugin {
     private ConfigurationHandler configurationHandler;
     private NMS_Handler nmsHandler;
+    private Economy econ;
 
     @Override
     public void onEnable() {
@@ -20,6 +23,10 @@ public final class MineableSpawners extends JavaPlugin {
         configurationHandler = new ConfigurationHandler(this);
 
         checkServerVersion();
+
+        if (!setupEconomy()) {
+            System.out.println("[MineableSpawners] vault not found, economy features disabled.");
+        }
 
         getCommand("mineablespawners").setExecutor(new MineableSpawnersCommand(this));
 
@@ -37,6 +44,18 @@ public final class MineableSpawners extends JavaPlugin {
             str.append("\n");
         }
         System.out.println(str.toString());
+    }
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
     }
 
     private void checkServerVersion() {
@@ -92,5 +111,9 @@ public final class MineableSpawners extends JavaPlugin {
 
     public NMS_Handler getNmsHandler() {
         return nmsHandler;
+    }
+
+    public Economy getEcon() {
+        return econ;
     }
 }
