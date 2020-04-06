@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,12 +19,14 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class SpawnerMineListener implements Listener {
     private MineableSpawners plugin;
     private Set<Location> minedSpawners = new HashSet<>();
     private Map<String, Double> permissionChances = new HashMap<>();
+    private Map<EntityType, Double> prices = new HashMap<>();
 
     public SpawnerMineListener(MineableSpawners plugin) {
         this.plugin = plugin;
@@ -34,6 +37,16 @@ public class SpawnerMineListener implements Listener {
                 double chance = Double.parseDouble(args[1]);
                 permissionChances.put(permission, chance);
             } catch (Exception ignore) {}
+        }
+        for (String line : plugin.getConfigurationHandler().getList("mining", "prices")) {
+            try {
+                String[] args = line.split(":");
+                EntityType type = EntityType.valueOf(args[0].toUpperCase());
+                double price = Double.parseDouble(args[1]);
+                prices.put(type, price);
+            } catch (Exception ignore) {
+                System.out.println("[MineableSpawners] Error with mining price \"" + line + "\"");
+            }
         }
     }
 
@@ -52,12 +65,13 @@ public class SpawnerMineListener implements Listener {
             String type = spawner.getSpawnedType().name();
 
             Player player = e.getPlayer();
+            boolean bypassing = player.getGameMode().equals(GameMode.CREATIVE) || player.hasPermission("mineablespawners.bypass");
 
             if (!plugin.getConfigurationHandler().getBoolean("mining", "drop-exp") || minedSpawners.contains(loc)) {
                 e.setExpToDrop(0);
             }
 
-            if (player.getGameMode().equals(GameMode.CREATIVE) || player.hasPermission("mineablespawners.bypass")) {
+            if (bypassing) {
                 handleGivingSpawner(e, material, spawner, loc, player, block);
                 return;
             }
@@ -109,6 +123,19 @@ public class SpawnerMineListener implements Listener {
                     handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "no-individual-permission"), plugin.getConfigurationHandler().getMessage("mining", "requirements.individual-permission"));
                     return;
                 }
+            }
+
+            if (plugin.getEcon() != null && plugin.getConfigurationHandler().getBoolean("mining", "charge") && prices.containsKey(spawner.getSpawnedType())) {
+                DecimalFormat df = new DecimalFormat("##.##");
+
+                if (!plugin.getEcon().withdrawPlayer(player, prices.get(spawner.getSpawnedType())).transactionSuccess()) {
+                    String missing = df.format(prices.get(spawner.getSpawnedType()) - plugin.getEcon().getBalance(player));
+                    player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "not-enough-money").replace("%missing%", missing).replace("%cost%", prices.get(spawner.getSpawnedType()).toString()));
+                    e.setCancelled(true);
+                    return;
+                }
+
+                player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "transaction-success").replace("%type%", Chat.uppercaseStartingLetters(type)).replace("%cost%", df.format(prices.get(spawner.getSpawnedType()))).replace("%balance%", df.format(plugin.getEcon().getBalance(player))));
             }
 
             double dropChance = 0;

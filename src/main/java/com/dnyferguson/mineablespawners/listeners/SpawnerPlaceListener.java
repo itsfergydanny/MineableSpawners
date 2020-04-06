@@ -30,11 +30,11 @@ public class SpawnerPlaceListener implements Listener {
         for (String line : plugin.getConfigurationHandler().getList("placing", "prices")) {
             try {
                 String[] args = line.split(":");
-                EntityType type = EntityType.valueOf(args[0]);
+                EntityType type = EntityType.valueOf(args[0].toUpperCase());
                 double price = Double.parseDouble(args[1]);
                 prices.put(type, price);
             } catch (Exception ignore) {
-                System.out.println("[MineableSpawners] Error with price \"" + line + "\"");
+                System.out.println("[MineableSpawners] Error with placing price \"" + line + "\"");
             }
         }
     }
@@ -49,9 +49,10 @@ public class SpawnerPlaceListener implements Listener {
         }
 
         Player player = e.getPlayer();
+        boolean bypassing = player.getGameMode().equals(GameMode.CREATIVE) || player.hasPermission("mineablespawners.bypass");
 
         if (plugin.getConfigurationHandler().getList("placing", "blacklisted-worlds").contains(player.getWorld().getName())) {
-            if (!player.getGameMode().equals(GameMode.CREATIVE) && !player.hasPermission("mineablespawners.bypass")) {
+            if (!bypassing) {
                 player.sendMessage(plugin.getConfigurationHandler().getMessage("placing", "blacklisted"));
                 e.setCancelled(true);
                 return;
@@ -63,14 +64,16 @@ public class SpawnerPlaceListener implements Listener {
         try {
             EntityType type = plugin.getNmsHandler().getType(placed);
 
-            if (plugin.getEcon() != null && plugin.getConfigurationHandler().getBoolean("placing", "charge") && prices.containsKey(type)) {
+            if (!bypassing && plugin.getEcon() != null && plugin.getConfigurationHandler().getBoolean("placing", "charge") && prices.containsKey(type)) {
+                DecimalFormat df = new DecimalFormat("##.##");
+
                 if (!plugin.getEcon().withdrawPlayer(player, prices.get(type)).transactionSuccess()) {
-                    double missing = plugin.getEcon().getBalance(player) - prices.get(type);
-                    player.sendMessage(plugin.getConfigurationHandler().getMessage("placing", "not-enough-money").replace("%missing%", missing + "").replace("%cost%", prices.get(type).toString()));
+                    String missing = df.format(prices.get(type) - plugin.getEcon().getBalance(player));
+                    player.sendMessage(plugin.getConfigurationHandler().getMessage("placing", "not-enough-money").replace("%missing%", missing).replace("%cost%", prices.get(type).toString()));
                     e.setCancelled(true);
                     return;
                 }
-                DecimalFormat df = new DecimalFormat("#");
+
                 player.sendMessage(plugin.getConfigurationHandler().getMessage("placing", "transaction-success").replace("%type%", Chat.uppercaseStartingLetters(type.name())).replace("%cost%", df.format(prices.get(type))).replace("%balance%", df.format(plugin.getEcon().getBalance(player))));
             }
 
