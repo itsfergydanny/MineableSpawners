@@ -2,12 +2,16 @@ package com.dnyferguson.mineablespawners.commands;
 
 import com.dnyferguson.mineablespawners.MineableSpawners;
 import com.dnyferguson.mineablespawners.utils.Chat;
+import com.dnyferguson.mineablespawners.utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class SetSubCommand {
 
@@ -41,9 +45,9 @@ public class SetSubCommand {
             }
         }
 
-        Block target = player.getTargetBlock(null, 5);
+        Block target = player.getTargetBlock(new HashSet<Material>(), 5);
 
-        if (target.getState().getBlock().getType() != Material.SPAWNER) {
+        if (target.getState().getBlock().getType() != XMaterial.SPAWNER.parseMaterial()) {
             player.sendMessage(plugin.getConfigurationHandler().getMessage("set", "not-looking-at"));
             return;
         }

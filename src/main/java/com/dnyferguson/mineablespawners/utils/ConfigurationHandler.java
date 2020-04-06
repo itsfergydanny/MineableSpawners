@@ -53,10 +53,14 @@ public class ConfigurationHandler {
         ConfigurationSection section = config.getConfigurationSection("placing");
 
         bools.put("log", section.getBoolean("log"));
+        bools.put("charge", section.getBoolean("charge"));
 
         msgs.put("blacklisted", section.getString("messages.blacklisted"));
+        msgs.put("not-enough-money", section.getString("messages.not-enough-money"));
+        msgs.put("transaction-success", section.getString("messages.transaction-success"));
 
         lsts.put("blacklisted-worlds", section.getStringList("blacklisted-worlds"));
+        lsts.put("prices", section.getStringList("prices"));
 
         messages.put("placing", msgs);
         booleans.put("placing", bools);
@@ -85,10 +89,12 @@ public class ConfigurationHandler {
         msgs.put("requirements.silktouch", section.getString("requirements.silktouch"));
         msgs.put("requirements.silktouch-level", section.getString("requirements.silktouch-level"));
         msgs.put("requirements.wrong-tool", section.getString("requirements.wrong-tool"));
+        msgs.put("not-enough-money", section.getString("messages.not-enough-money"));
 
         lsts.put("blacklisted-worlds", section.getStringList("blacklisted-worlds"));
         lsts.put("perm-based-chances", section.getStringList("perm-based-chances"));
         lsts.put("tools", section.getStringList("tools"));
+        lsts.put("prices", section.getStringList("prices"));
 
         bools.put("drop-exp", section.getBoolean("drop-exp"));
         bools.put("require-permission", section.getBoolean("require-permission"));
@@ -98,6 +104,7 @@ public class ConfigurationHandler {
         bools.put("still-break", section.getBoolean("still-break"));
         bools.put("require-individual-permission", section.getBoolean("require-individual-permission"));
         bools.put("use-perm-based-chances", section.getBoolean("use-perm-based-chances"));
+        bools.put("charge", section.getBoolean("charge"));
 
         ints.put("required-level", section.getInt("required-level"));
 

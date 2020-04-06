@@ -1,6 +1,7 @@
 package com.dnyferguson.mineablespawners.listeners;
 
 import com.dnyferguson.mineablespawners.MineableSpawners;
+import com.dnyferguson.mineablespawners.utils.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
@@ -33,7 +34,7 @@ public class EggChangeListener implements Listener {
         String itemName = itemInHand.getType().name();
         Material targetBlock = e.getClickedBlock().getType();
 
-        if (targetBlock != Material.SPAWNER || !itemName.contains("SPAWN_EGG")) {
+        if (targetBlock != XMaterial.SPAWNER.parseMaterial() || !itemName.contains("SPAWN_EGG")) {
             return;
         }
 
