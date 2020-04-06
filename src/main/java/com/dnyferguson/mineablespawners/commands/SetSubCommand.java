@@ -49,8 +49,6 @@ public class SetSubCommand {
         }
 
         CreatureSpawner spawner = (CreatureSpawner) target.getState();
-        spawner.setSpawnedType(entityType);
-        spawner.update();
 
         String from = Chat.uppercaseStartingLetters(spawner.getSpawnedType().name());
         String to = Chat.uppercaseStartingLetters(type);
@@ -58,6 +56,9 @@ public class SetSubCommand {
             player.sendMessage(plugin.getConfigurationHandler().getMessage("set", "already-type"));
             return;
         }
+
+        spawner.setSpawnedType(entityType);
+        spawner.update();
 
         player.sendMessage(plugin.getConfigurationHandler().getMessage("set", "success").replace("%from%", from).replace("%to%", to));
     }
