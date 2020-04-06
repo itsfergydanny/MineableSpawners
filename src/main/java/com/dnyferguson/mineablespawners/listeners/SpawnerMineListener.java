@@ -56,6 +56,13 @@ public class SpawnerMineListener implements Listener {
                 e.setExpToDrop(0);
             }
 
+            Material tool = player.getInventory().getItemInMainHand().getType();
+            System.out.println("DEBUG: tool name = " + tool.name());
+            if (!plugin.getConfigurationHandler().getList("mining", "tools").contains(tool.name())) {
+                handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "wrong-tool"), plugin.getConfigurationHandler().getMessage("mining", "requirements.wrong-tool"));
+                return;
+            }
+
             if (plugin.getConfigurationHandler().getBoolean("mining", "require-permission")) {
                 if (!player.hasPermission("mineablespawners.mine")) {
                     handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "no-permission"), plugin.getConfigurationHandler().getMessage("mining", "requirements.permission"));
