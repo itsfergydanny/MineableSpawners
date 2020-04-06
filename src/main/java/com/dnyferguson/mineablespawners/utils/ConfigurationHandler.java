@@ -234,6 +234,7 @@ public class ConfigurationHandler {
 
         messages.put("set", msgs);
         booleans.put("set", bools);
+        lists.put("set", lsts);
     }
 
     private void typesSection(FileConfiguration config) {
