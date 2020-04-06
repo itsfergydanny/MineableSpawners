@@ -154,6 +154,10 @@ mining:
   # Configure worlds players will not be able to change spawners in.
   blacklisted-worlds:
     - 'worldname'
+  # Charge players to mine spawners? use type "ALL" to charge the same price for all spawners. Format: <mob>:<price>.
+  charge: false
+  prices:
+    - 'PIG:10000'
   messages:
     wrong-tool: '&cYou do not have the tool required.'
     no-permission: '&cNo Permission.'
@@ -165,6 +169,10 @@ mining:
     inventory-full: '&cThe targets inventory is full. No spawner has been given.'
     # Available placeholder: %requirement% => missing requirement
     still-break: '&cThe spawner you mined did not drop because you failed to meet the following requirement: &f%requirement%&c.'
+    # Available placeholder: %missing% => amount of money missing, %cost% => cost to ppalce spawner.
+    not-enough-money: '&cYou do not have enough to do this. You are missing: $%missing%'
+    # Available placeholders: %type% => type of spawner, %balance% => players balance, %cost% => cost to place spawner.
+    transaction-success: '&eYou have mined a %type% spawner for $%cost%!'
 
 #
 # Placing spawners

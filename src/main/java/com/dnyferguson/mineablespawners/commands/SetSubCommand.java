@@ -14,8 +14,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SetSubCommand {
+    private Set<Material> invisibleBlocks = new HashSet<>();
 
-    public SetSubCommand() {}
+    public SetSubCommand() {
+        invisibleBlocks.add(XMaterial.AIR.parseMaterial());
+    }
 
     public void execute(MineableSpawners plugin, CommandSender sender, String type) {
         if (!(sender instanceof Player)) {
@@ -45,7 +48,7 @@ public class SetSubCommand {
             }
         }
 
-        Block target = player.getTargetBlock(new HashSet<Material>(), 5);
+        Block target = player.getTargetBlock(invisibleBlocks, 5);
 
         if (target.getState().getBlock().getType() != XMaterial.SPAWNER.parseMaterial()) {
             player.sendMessage(plugin.getConfigurationHandler().getMessage("set", "not-looking-at"));
