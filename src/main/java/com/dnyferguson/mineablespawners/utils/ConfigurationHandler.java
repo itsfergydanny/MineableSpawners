@@ -1,8 +1,10 @@
 package com.dnyferguson.mineablespawners.utils;
 
 import com.dnyferguson.mineablespawners.MineableSpawners;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.List;
@@ -267,6 +269,32 @@ public class ConfigurationHandler {
 
         messages.put("types", msgs);
         booleans.put("types", bools);
+    }
+
+    public void sendMessage(String section, String key, CommandSender sender) {
+        if (getMessage(section, key) == null) {
+            return;
+        }
+
+        String message = getMessage(section, key);
+        if (message.equals("") || message.equals(" ")) {
+            return;
+        }
+
+        sender.sendMessage(message);
+    }
+
+    public void sendMessage(String section, String key, Player player) {
+        if (getMessage(section, key) == null) {
+            return;
+        }
+
+        String message = getMessage(section, key);
+        if (message.equals("") || message.equals(" ")) {
+            return;
+        }
+
+        player.sendMessage(message);
     }
 
     public List<String> getList(String section, String key) {
