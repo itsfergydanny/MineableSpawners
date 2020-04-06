@@ -15,17 +15,23 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class SpawnerMineListener implements Listener {
     private MineableSpawners plugin;
     private Set<Location> minedSpawners = new HashSet<>();
+    private Map<String, Double> permissionChances = new HashMap<>();
 
     public SpawnerMineListener(MineableSpawners plugin) {
         this.plugin = plugin;
+        for (String line : plugin.getConfigurationHandler().getList("mining", "perm-based-chances")) {
+            String[] args = line.split(":");
+            try {
+                String permission = args[0];
+                double chance = Double.parseDouble(args[1]);
+                permissionChances.put(permission, chance);
+            } catch (Exception ignore) {}
+        }
     }
 
     @EventHandler (priority = EventPriority.MONITOR)
@@ -106,13 +112,28 @@ public class SpawnerMineListener implements Listener {
 
             item = plugin.getNmsHandler().setType(item, spawner.getSpawnedType());
 
-            double dropChance = plugin.getConfigurationHandler().getDouble("mining", "chance");
-
-            if (dropChance != 1) {
-                double random = Math.random();
-                if (random >= dropChance) {
-                    return;
+            double dropChance = 0;
+            if (plugin.getConfigurationHandler().getBoolean("mining", "use-perm-based-chances") && permissionChances.size() > 0) {
+                for (String perm : permissionChances.keySet()) {
+                    if (player.hasPermission(perm)) {
+                        dropChance = permissionChances.get(perm)/100;
+                        break;
+                    }
                 }
+            } else {
+                dropChance = plugin.getConfigurationHandler().getDouble("mining", "chance")/100;
+                if (dropChance != 1) {
+                    double random = Math.random();
+                    if (random >= dropChance) {
+                        return;
+                    }
+                }
+            }
+
+            double random = Math.random();
+            System.out.println("DEBUG: random = " + random + ", DROP CHANCE = " + dropChance);
+            if (random >= dropChance) {
+                return;
             }
 
             minedSpawners.add(loc);
