@@ -2,7 +2,6 @@ package com.dnyferguson.mineablespawners.nms;
 
 import net.minecraft.server.v1_15_R1.NBTTagCompound;
 import net.minecraft.server.v1_15_R1.NBTTagString;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -29,7 +28,7 @@ public class NMS_1_15 implements NMS_Handler {
 
         String mob = nmsItemCompound.getString("ms_mob");
 
-        EntityType entity = EntityType.PIG;
+        EntityType entity = null;
         try {
             entity = EntityType.valueOf(mob);
         } catch (Exception ignore) {}

@@ -28,7 +28,7 @@ public class NMS_1_12 implements NMS_Handler {
 
         String mob = nmsItemCompound.getString("ms_mob");
 
-        EntityType entity = EntityType.PIG;
+        EntityType entity = null;
         try {
             entity = EntityType.valueOf(mob);
         } catch (Exception ignore) {}

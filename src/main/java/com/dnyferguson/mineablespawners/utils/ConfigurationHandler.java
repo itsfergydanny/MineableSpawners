@@ -93,6 +93,7 @@ public class ConfigurationHandler {
         msgs.put("requirements.wrong-tool", section.getString("requirements.wrong-tool"));
         msgs.put("not-enough-money", section.getString("messages.not-enough-money"));
         msgs.put("transaction-success", section.getString("messages.transaction-success"));
+        msgs.put("out-of-luck", section.getString("messages.out-of-luck"));
 
         lsts.put("blacklisted-worlds", section.getStringList("blacklisted-worlds"));
         lsts.put("perm-based-chances", section.getStringList("perm-based-chances"));
