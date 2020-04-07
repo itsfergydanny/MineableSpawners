@@ -117,13 +117,13 @@ explode:
 # Mining spawners
 #
 mining:
-  # Which tools should be used to mine spawners
-  tools:
-    - 'DIAMOND_PICKAXE'
   # Whether or not to require the permission "mineablespawners.mine" to mine a spawner.
   require-permission: true
   # Whether or not to require the permission "mineablespawners.mine.<type>" to mine a spawner.
   require-individual-permission: false
+  # Which tools should be used to mine spawners
+  tools:
+    - 'DIAMOND_PICKAXE'
   # Whether or not to require silk touch to mine a spawner.
   require-silktouch: true
   # Should a different of silk touch be required? "required-level" has no effect if "require-silktouch-level" is false.
@@ -173,6 +173,8 @@ mining:
     not-enough-money: '&cYou do not have enough to do this. You are missing: $%missing%'
     # Available placeholders: %type% => type of spawner, %balance% => players balance, %cost% => cost to place spawner.
     transaction-success: '&eYou have mined a %type% spawner for $%cost%!'
+    # Message sent when players didn't get the spawner because of their odds (chance setting)
+    out-of-luck: '&cYou were out of luck and didn''t drop the spawner.'
 
 #
 # Placing spawners
