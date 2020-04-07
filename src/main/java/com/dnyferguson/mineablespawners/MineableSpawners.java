@@ -1,5 +1,6 @@
 package com.dnyferguson.mineablespawners;
 
+import com.dnyferguson.mineablespawners.api.API;
 import com.dnyferguson.mineablespawners.commands.MineableSpawnersCommand;
 import com.dnyferguson.mineablespawners.listeners.*;
 import com.dnyferguson.mineablespawners.nms.*;
@@ -15,6 +16,7 @@ public final class MineableSpawners extends JavaPlugin {
     private ConfigurationHandler configurationHandler;
     private NMS_Handler nmsHandler;
     private Economy econ;
+    private static API api;
 
     @Override
     public void onEnable() {
@@ -44,6 +46,8 @@ public final class MineableSpawners extends JavaPlugin {
             str.append("\n");
         }
         System.out.println(str.toString());
+
+        api = new API(this);
     }
 
     private boolean setupEconomy() {
@@ -115,5 +119,9 @@ public final class MineableSpawners extends JavaPlugin {
 
     public Economy getEcon() {
         return econ;
+    }
+
+    public static API getApi() {
+        return api;
     }
 }

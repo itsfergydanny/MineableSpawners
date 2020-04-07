@@ -1,6 +1,5 @@
 package com.dnyferguson.mineablespawners.nms;
 
-import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
