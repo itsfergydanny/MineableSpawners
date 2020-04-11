@@ -109,14 +109,14 @@ public class SpawnerMineListener implements Listener {
         }
 
         // check if right tool
-        Material tool = player.getInventory().getItemInMainHand().getType();
+        Material tool = player.getItemInHand().getType();
         if (!plugin.getConfigurationHandler().getList("mining", "tools").contains(tool.name())) {
             handleStillBreak(e, player, plugin.getConfigurationHandler().getMessage("mining", "wrong-tool"), plugin.getConfigurationHandler().getMessage("mining", "requirements.wrong-tool"));
             return;
         }
 
         // check if requiring silktouch
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        ItemStack itemInHand = player.getItemInHand();
         if (plugin.getConfigurationHandler().getBoolean("mining", "require-silktouch") && !player.hasPermission("mineablespawners.nosilk")) {
             int silkTouchLevel = 0;
             if (itemInHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
