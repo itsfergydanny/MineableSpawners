@@ -6,6 +6,7 @@ import com.dnyferguson.mineablespawners.utils.XMaterial;
 import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
@@ -21,7 +22,7 @@ public class SpawnerExplodeListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler (ignoreCancelled = true)
+    @EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onSpawnerExplode(EntityExplodeEvent e) {
         if (!plugin.getConfigurationHandler().getBoolean("explode", "drop")) {
             return;
