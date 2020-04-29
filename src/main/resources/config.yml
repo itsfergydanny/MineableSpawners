@@ -154,7 +154,7 @@ mining:
   # Configure worlds players will not be able to change spawners in.
   blacklisted-worlds:
     - 'worldname'
-  # Charge players to mine spawners? use type "ALL" to charge the same price for all spawners. Format: <mob>:<price>.
+  # Charge players to mine spawners? use type "ALL" to charge the same price for all spawners. Format: <mob>:<price>. Requires the plugin Vault and a compatible economy plugin.
   charge: false
   prices:
     - 'PIG:10000'
@@ -185,7 +185,7 @@ placing:
   # Configure worlds players will not be able to place spawners in.
   blacklisted-worlds:
     - 'worldname'
-  # Charge players to place spawners? use type "ALL" to charge the same price for all spawners. Format: <mob>:<price>.
+  # Charge players to place spawners? use type "ALL" to charge the same price for all spawners. Format: <mob>:<price>. Requires the plugin Vault and a compatible economy plugin.
   charge: false
   prices:
     - 'PIG:10000'

@@ -78,17 +78,17 @@ public class SpawnerPlaceListener implements Listener {
             return;
         }
 
-        // check if charging / set cost / transaction success
+        // check if charging/has enough
         double cost = 0;
         if (plugin.getEcon() != null && plugin.getConfigurationHandler().getBoolean("placing", "charge")) {
             if (!allSamePrice && prices.containsKey(entityType)) {
-                cost = prices.get(entityType);
+                cost = prices.getOrDefault(entityType, 0.0);
             } else {
                 cost = globalPrice;
             }
 
             if (!plugin.getEcon().withdrawPlayer(player, cost).transactionSuccess()) {
-                String missing = df.format(prices.get(entityType) - plugin.getEcon().getBalance(player));
+                String missing = df.format(cost - plugin.getEcon().getBalance(player));
                 player.sendMessage(plugin.getConfigurationHandler().getMessage("placing", "not-enough-money").replace("%missing%", missing).replace("%cost%", cost + ""));
                 e.setCancelled(true);
                 return;
