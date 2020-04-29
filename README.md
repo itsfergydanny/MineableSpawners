@@ -4,14 +4,14 @@ This plugin allows players to mine and drop spawners, receive them via command a
 
 ## Current features:
 
-    Define if users can mine spawners.​
-    Change spawner types using /spawner (type).​
-    Give spawners to players using /spawnergive (player) (type) (amount).​
-    Disable spawner renaming in anvils.​
-    Define if users can change spawner types using spawn eggs.​
-    & more!​
+* Define if users can mine spawners.
+* Change spawner types using /spawner (type).
+* Give spawners to players using /spawnergive (player) (type) (amount).
+* Disable spawner renaming in anvils.
+* Define if users can change spawner types using spawn eggs.
+* & more!
 
-​
+
 ### Commands: Main command "/mineablespawners" or "ms"
 
    * "/ms give <player> <type> <amount>" => Give a player spawners.
@@ -36,6 +36,8 @@ This plugin allows players to mine and drop spawners, receive them via command a
 
    * Optional: Vault [https://dev.bukkit.org/projects/vault] and a compatible economy plugin like Essentials for the economy features.
 
+### Metrics:
+We use bStats to collect anonymous metrics (only grabs stuff like playercount, java version, server version and such). This helps me get some information about how used my plugin is and keeps me motivated. If you wish to turn it off you can in ./plugins/bStats/config.yml
 
 Everything is configurable and explained in the configuration file!
 
