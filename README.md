@@ -32,6 +32,9 @@ This plugin allows players to mine and drop spawners, receive them via command a
    * "mineablespawners.types" => List available entity types.
    * "mineablespawners.bypass" => Bypass spawner placing/mining requirements.
 
+### Dependencies:
+
+   * Optional: Vault [https://dev.bukkit.org/projects/vault] and a compatible economy plugin like Essentials for the economy features.
 
 
 Everything is configurable and explained in the configuration file!
