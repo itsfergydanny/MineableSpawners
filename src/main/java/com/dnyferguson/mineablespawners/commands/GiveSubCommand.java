@@ -19,7 +19,7 @@ public class GiveSubCommand {
 
     public void execute(MineableSpawners plugin, CommandSender sender, String target, String type, String amt) {
         Player targetPlayer = Bukkit.getPlayer(target);
-        if (target == null) {
+        if (target == null || targetPlayer == null) {
             plugin.getConfigurationHandler().sendMessage("give", "player-does-not-exist", sender);
             return;
         }
