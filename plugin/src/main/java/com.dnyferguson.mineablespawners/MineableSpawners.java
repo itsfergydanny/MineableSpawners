@@ -34,6 +34,7 @@ public final class MineableSpawners extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        getConfig().options().copyDefaults(true);
         saveDefaultConfig();
 
         configurationHandler = new ConfigurationHandler(this);
