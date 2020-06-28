@@ -18,7 +18,7 @@ public class EggChangeListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler (ignoreCancelled = true)
+    @EventHandler
     public void onEggChange(PlayerInteractEvent e) {
         if (!e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             return;
@@ -39,6 +39,7 @@ public class EggChangeListener implements Listener {
         }
 
         if (plugin.getConfigurationHandler().getList("eggs", "blacklisted-worlds").contains(player.getWorld().getName())) {
+            e.setCancelled(true);
             player.sendMessage(plugin.getConfigurationHandler().getMessage("eggs", "blacklisted"));
             return;
         }
