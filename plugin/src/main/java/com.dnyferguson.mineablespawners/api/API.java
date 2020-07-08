@@ -36,10 +36,6 @@ public class API {
 
     public EntityType getEntityTypeFromItemStack(ItemStack item) {
         EntityType entityType = null;
-
-
-        System.out.println(item.getItemMeta().getLore());
-        System.out.println(plugin.getConfigurationHandler().getList("global", "lore"));
         if(plugin.getConfigurationHandler().getBoolean("global", "lore-enabled")){
             try {
             return EntityType.valueOf(findInLore(item.getItemMeta().getLore()));
