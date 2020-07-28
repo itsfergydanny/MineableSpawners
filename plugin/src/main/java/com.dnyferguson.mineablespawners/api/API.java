@@ -22,22 +22,22 @@ public class API {
     public EntityType getEntityTypeFromItemStack(ItemStack item) {
         EntityType entityType = null;
 
-        // v1 compatibility
+        // v3 compatibility
         try {
-            entityType = EntityType.valueOf(item.getItemMeta().getLore().toString().split(": §7")[1].split("]")[0].toUpperCase());
+            entityType = plugin.getNmsHandler().getType(item);
+            return entityType;
         } catch (Exception ignore) {}
 
-        // v2 compatibility
-        if (entityType == null) {
+        if (plugin.getConfigurationHandler().getBoolean("global", "lore-enabled")) {
+            // v2 compatibility
             try {
                 entityType = EntityType.valueOf(ChatColor.stripColor(item.getItemMeta().getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase());
+                return entityType;
             } catch (Exception ignore) {}
-        }
 
-        // v3 compatibility
-        if (entityType == null) {
+            // v1 compatibility
             try {
-                entityType = plugin.getNmsHandler().getType(item);
+                entityType = EntityType.valueOf(item.getItemMeta().getLore().toString().split(": §7")[1].split("]")[0].toUpperCase());
             } catch (Exception ignore) {}
         }
 
