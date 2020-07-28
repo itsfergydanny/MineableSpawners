@@ -6,6 +6,10 @@
 # General
 #
 global:
+  # Enable/Disable backwards compatibility (Checks spawner item lore/name). Not recommended unless you have too many old
+  # spawners in circulation that you don't want to manually trade for new ones. When this is disabled, you can safely let
+  # people rename spawners.
+  backwards-compatibility: false
   # Set how spawners look. Available placeholder: %mob% => mob name
   display:
     name: '&e%mob% &fSpawner'

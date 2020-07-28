@@ -1,6 +1,5 @@
-package com.dnyfergusn.mineablespawners.nms;
+package com.dnyferguson.mineablespawners.nms;
 
-import com.dnyferguson.mineablespawners.nms.NMS_Handler;
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import net.minecraft.server.v1_12_R1.NBTTagString;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
