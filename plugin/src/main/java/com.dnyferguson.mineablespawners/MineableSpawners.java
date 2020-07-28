@@ -42,13 +42,15 @@ public final class MineableSpawners extends JavaPlugin {
         pm.registerEvents(new AnvilRenameListener(this), this);
         pm.registerEvents(new SpawnerExplodeListener(this), this);
 
-        StringBuilder str = new StringBuilder("[MineableSpawners] Available mob types: \n");
-        for (EntityType type : EntityType.values()) {
-            str.append("- ");
-            str.append(type.name());
-            str.append("\n");
+        if (getConfigurationHandler().getBoolean("global", "show-available")) {
+            StringBuilder str = new StringBuilder("[MineableSpawners] Available mob types: \n");
+            for (EntityType type : EntityType.values()) {
+                str.append("- ");
+                str.append(type.name());
+                str.append("\n");
+            }
+            System.out.println(str.toString());
         }
-        System.out.println(str.toString());
 
         api = new API(this);
         int pluginId = 7354;
