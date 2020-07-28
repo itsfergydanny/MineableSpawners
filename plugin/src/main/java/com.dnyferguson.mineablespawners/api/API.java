@@ -25,12 +25,14 @@ public class API {
         // v3 compatibility
         try {
             entityType = plugin.getNmsHandler().getType(item);
+            return entityType;
         } catch (Exception ignore) {}
 
         if (plugin.getConfigurationHandler().getBoolean("global", "backwards-compatibility")) {
             // v2 compatibility
             try {
                 entityType = EntityType.valueOf(ChatColor.stripColor(item.getItemMeta().getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase());
+                return entityType;
             } catch (Exception ignore) {}
 
             // v1 compatibility
