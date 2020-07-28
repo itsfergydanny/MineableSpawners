@@ -192,6 +192,7 @@ public class ConfigurationHandler {
 
         bools.put("lore-enabled", section.getBoolean("display.lore-enabled"));
         bools.put("backwards-compatibility", section.getBoolean("backwards-compatibility"));
+        bools.put("show-available", section.getBoolean("show-available"));
 
         messages.put("global", msgs);
         lists.put("global", lsts);
