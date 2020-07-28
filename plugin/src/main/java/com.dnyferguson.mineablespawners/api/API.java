@@ -28,7 +28,7 @@ public class API {
             return entityType;
         } catch (Exception ignore) {}
 
-        if (plugin.getConfigurationHandler().getBoolean("global", "lore-enabled")) {
+        if (plugin.getConfigurationHandler().getBoolean("global", "backwards-compatibility")) {
             // v2 compatibility
             try {
                 entityType = EntityType.valueOf(ChatColor.stripColor(item.getItemMeta().getDisplayName()).split(" Spawner")[0].replace("[", "").replace(" ", "_").toUpperCase());
