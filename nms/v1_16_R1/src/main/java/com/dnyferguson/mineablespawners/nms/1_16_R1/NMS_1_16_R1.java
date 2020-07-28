@@ -33,7 +33,9 @@ public class NMS_1_16_R1 implements com.dnyferguson.mineablespawners.nms.NMS_Han
         EntityType entity = null;
         try {
             entity = EntityType.valueOf(mob);
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+            throw new NullPointerException("Invalid mob");
+        }
 
         return entity;
     }
