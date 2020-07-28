@@ -34,7 +34,9 @@ public class NMS_1_9_R1 implements NMS_Handler {
         EntityType entity = null;
         try {
             entity = EntityType.valueOf(mob);
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+            throw new NullPointerException("Invalid mob");
+        }
 
         return entity;
     }
