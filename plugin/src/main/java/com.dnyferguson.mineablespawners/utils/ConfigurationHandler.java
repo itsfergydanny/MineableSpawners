@@ -191,6 +191,7 @@ public class ConfigurationHandler {
         lsts.put("lore", section.getStringList("display.lore"));
 
         bools.put("lore-enabled", section.getBoolean("display.lore-enabled"));
+        bools.put("backwards-compatibility", section.getBoolean("backwards-compatibility"));
 
         messages.put("global", msgs);
         lists.put("global", lsts);

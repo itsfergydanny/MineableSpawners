@@ -1,22 +1,10 @@
 package com.dnyferguson.mineablespawners;
 
-import com.dnyfergusn.mineablespawners.nms.NMS_1_12_R1;
 import com.dnyferguson.mineablespawners.api.API;
 import com.dnyferguson.mineablespawners.commands.MineableSpawnersCommand;
 import com.dnyferguson.mineablespawners.listeners.*;
 import com.dnyferguson.mineablespawners.metrics.Metrics;
-import com.dnyferguson.mineablespawners.nms.NMS_1_10_R1;
-import com.dnyferguson.mineablespawners.nms.NMS_1_11_R1;
-import com.dnyferguson.mineablespawners.nms.NMS_1_13_R1;
-import com.dnyferguson.mineablespawners.nms.NMS_1_13_R2;
-import com.dnyferguson.mineablespawners.nms.NMS_1_15_R1;
-import com.dnyferguson.mineablespawners.nms.NMS_1_16_R1;
-import com.dnyferguson.mineablespawners.nms.NMS_1_8_R1;
-import com.dnyferguson.mineablespawners.nms.NMS_1_8_R2;
-import com.dnyferguson.mineablespawners.nms.NMS_1_8_R3;
-import com.dnyferguson.mineablespawners.nms.NMS_1_9_R1;
-import com.dnyferguson.mineablespawners.nms.NMS_1_9_R2;
-import com.dnyferguson.mineablespawners.nms.NMS_Handler;
+import com.dnyferguson.mineablespawners.nms.*;
 import com.dnyferguson.mineablespawners.utils.ConfigurationHandler;
 import io.github.portlek.versionmatched.VersionMatched;
 import net.milkbowl.vault.economy.Economy;
