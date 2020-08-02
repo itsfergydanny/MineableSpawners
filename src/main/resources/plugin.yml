@@ -1,0 +1,13 @@
+name: MineableSpawners
+version: 3.0.7
+main: com.dnyferguson.mineablespawners.MineableSpawners
+authors: [fergydanny]
+description: A simplistic silk spawner plugin
+website: https://dnyferguson.com
+softdepend: [Vault]
+api-version: 1.13
+commands:
+  mineablespawners:
+    aliases: [ms, mineablespawner]
+    usage: /mineablespawners <give|set|reload>
+    description: List spawner related commands.
