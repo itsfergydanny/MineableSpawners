@@ -6,7 +6,7 @@
 
     <groupId>com.dnyferguson</groupId>
     <artifactId>MineableSpawners</artifactId>
-    <version>3.0.9</version>
+    <version>3.0.10</version>
     <packaging>jar</packaging>
 
     <name>MineableSpawners</name>
