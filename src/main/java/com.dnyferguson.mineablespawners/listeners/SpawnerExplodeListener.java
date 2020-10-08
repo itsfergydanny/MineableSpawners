@@ -23,7 +23,7 @@ public class SpawnerExplodeListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler (ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    @EventHandler (ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onSpawnerExplode(EntityExplodeEvent e) {
         if (!plugin.getConfigurationHandler().getBoolean("explode", "drop")) {
             return;
