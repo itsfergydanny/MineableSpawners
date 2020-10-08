@@ -1,5 +1,5 @@
 name: MineableSpawners
-version: 3.0.9
+version: 3.0.10
 main: com.dnyferguson.mineablespawners.MineableSpawners
 authors: [fergydanny]
 description: A simplistic silk spawner plugin
