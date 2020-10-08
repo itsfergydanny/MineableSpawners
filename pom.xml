@@ -66,6 +66,10 @@
                             <pattern>de.tr7zw.changeme.nbtapi</pattern>
                             <shadedPattern>com.dnyferguson.mineablespawners.nbtapi</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.cryptomorin.xseries</pattern>
+                            <shadedPattern>com.dnyferguson.mineablespawners.xseries</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
             </plugin>
