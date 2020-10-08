@@ -228,6 +228,7 @@ public class ConfigurationHandler {
         msgs.put("received", section.getString("messages.received"));
 
         bools.put("require-permission", section.getBoolean("require-permission"));
+        bools.put("drop-if-full", section.getBoolean("drop-if-full"));
 
         messages.put("give", msgs);
         booleans.put("give", bools);
@@ -310,6 +311,13 @@ public class ConfigurationHandler {
 
     public boolean getBoolean(String section, String key) {
         return booleans.get(section).get(key);
+    }
+
+    public boolean getBooleanOrDefault(String section, String key, boolean defaultValue) {
+        try {
+            return booleans.get(section).get(key);
+        } catch (Exception ignore) {}
+        return defaultValue;
     }
 
     public double getDouble(String section, String key) {
