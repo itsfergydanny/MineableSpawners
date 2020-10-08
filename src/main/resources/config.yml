@@ -38,6 +38,8 @@ main:
 give:
   # Whether or not to require the permisison "mineablespawners.give" to give spawners.
   require-permission: true
+  # Whether or not to drop the spawner at the players feet if their inventory is full
+  drop-if-full: true
   messages:
     no-permission: '&cNo Permission.'
     player-does-not-exist: '&cThat player does not exist.'

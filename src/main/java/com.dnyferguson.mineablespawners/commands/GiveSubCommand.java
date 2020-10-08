@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 public class GiveSubCommand {
 
@@ -41,11 +42,6 @@ public class GiveSubCommand {
             return;
         }
 
-        if (targetPlayer.getInventory().firstEmpty() == -1) {
-            plugin.getConfigurationHandler().sendMessage("give", "inventory-full", sender);
-            return;
-        }
-
         ItemStack item = new ItemStack(XMaterial.SPAWNER.parseMaterial());
         ItemMeta meta = item.getItemMeta();
         item.setAmount(amount);
@@ -65,6 +61,18 @@ public class GiveSubCommand {
         nbti.setString("ms_mob", entityType.name());
 
         item = nbti.getItem();
+
+        if (targetPlayer.getInventory().firstEmpty() == -1) {
+            if (!plugin.getConfigurationHandler().getBooleanOrDefault("give", "drop-if-full", true)) {
+                plugin.getConfigurationHandler().sendMessage("give", "inventory-full", sender);
+                return;
+            }
+
+            plugin.getLogger().log(Level.INFO, "Dropped " + amount + "x " + mobFormatted + " Spawners at " + targetPlayer.getName() + "'s feet since their inventory was full!");
+            targetPlayer.getWorld().dropItemNaturally(targetPlayer.getLocation(), item);
+
+            return;
+        }
 
         targetPlayer.getInventory().addItem(item);
         plugin.getConfigurationHandler().getMessage("give", "success").replace("%mob%", mobFormatted).replace("%target%", targetPlayer.getName()).replace("%amount%", amount + "");
