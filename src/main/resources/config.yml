@@ -1,0 +1,205 @@
+#
+# Plugin by fergydanny (https://sysadamant.com). Check out my other plugins at https://www.spigotmc.org/resources/authors/fergydanny.25236/
+#
+
+#
+# General
+#
+global:
+  # Enable/Disable backwards compatibility (Checks spawner item lore/name). Not recommended unless you have too many old
+  # spawners in circulation that you don't want to manually trade for new ones. When this is disabled, you can safely let
+  # people rename spawners.
+  backwards-compatibility: false
+  # Enable/Disable showing a list of available entities in server console on plugin start
+  show-available: false
+  # Set how spawners look. Available placeholder: %mob% => mob name
+  display:
+    name: '&e%mob% &fSpawner'
+    lore:
+      - '&aPlace this down for'
+      - '&a %mob% Spawner.'
+    lore-enabled: true
+
+#
+# /mineablespawners command
+#
+main:
+  # The help message will only show the commands a player has access to.
+  help-message:
+    title: '&eMineableSpawners:'
+    give: '&f/mineablespawners give <player> <type> <amount> &7(Give a player a spawner)'
+    set: '&f/mineablespawners set <type> &7(Set the type of the spawner you are looking at)'
+    types: '&f/mineablespawners types &7(List available mob types)'
+    reload: '&f/mineablespawners reload &7(Reloads configuration)'
+
+#
+# /mineablespawners give command
+#
+give:
+  # Whether or not to require the permisison "mineablespawners.give" to give spawners.
+  require-permission: true
+  # Whether or not to drop the spawner at the players feet if their inventory is full
+  drop-if-full: true
+  messages:
+    no-permission: '&cNo Permission.'
+    player-does-not-exist: '&cThat player does not exist.'
+    invalid-type: '&cThat type does not exist. Use &7/mineablespawners types &cto list all available types.'
+    invalid-amount: '&cThe amount you entered is invalid. Please try again.'
+    inventory-full: '&cThe targets inventory is full. No spawner has been given.'
+    # Here you can use the placeholders: %amount% => amount given, %mob% => mob name, %target% => player receiving spawners
+    success: '&aYou have successfully given %amount%x %mob% Spawners to %target%!'
+    received: '&aYou have received %amount%x %mob% Spawners!'
+
+#
+# /mineablespawners set command
+#
+set:
+  # Whether or not to require the permisison "mineablespawners.set" to set a spawners type while looking at it.
+  require-permission: true
+  # Whether or not to require the permission "mineablespawners.set.<type>" to set a spawners type while looking at it.
+  require-individual-permission: true
+  # Configure worlds players will not be able to change spawners in.
+  blacklisted-worlds:
+    - 'worldname'
+  messages:
+    no-permission: '&cNo Permission.'
+    no-individual-permission: '&cYou do not have permission to change the spawner to that type.'
+    invalid-type: '&cThat type does not exist. Use &7/mineablespawners types &cto list all available types.'
+    not-looking-at: '&cYou are not looking at a spawner.'
+    already-type: '&cThat spawner is already of this type.'
+    # Here you can use the placeholders: %from% => mob its changing from, %to% => mob its changing to.
+    success: '&aYou have successfully changed the spawner from %from% to %to%!'
+    blacklisted: '&cYou cant do that in this world.'
+
+#
+# /mineablespawners types command
+#
+types:
+  # Whether or not to require the permisison "mineablespawners.types" to set a spawners type while looking at it.
+  require-permission: true
+  messages:
+    no-permission: '&cNo Permission.'
+    title: '&eAvailable Types: '
+    # This just sets how the mobs are listed. Available placeholder: %mob%
+    entries: '&f%mob%&7,'
+
+#
+# Renaming spawners with anvils
+#
+anvil:
+  prevent-anvil: true
+  messages:
+    prevented: '&cYou can not rename spawners with anvils.'
+
+#
+# Changing spawners with eggs
+#
+eggs:
+  # Whether or not to require the permission "mineablespawners.eggchange" to change a spawner type with a spawn egg.
+  require-permission: true
+  # Whether or not to require the permission "mineablespawners.eggchange.<type>" to change a spawner type with a spawn egg.
+  require-individual-permission: true
+  # Configure worlds in which players cant change spawners with eggs
+  blacklisted-worlds:
+    - 'worldname'
+  messages:
+    no-permission: '&cNo Permission.'
+    no-individual-permission: '&cYou do not have permission to change the spawner to that type.'
+    already-type: '&cThat spawner is already of this type.'
+    # Here you can use the placeholders: %from% => mob its changing from, %to% => mob its changing to.
+    success: '&aYou have successfully changed the spawner from %from% to %to%!'
+    blacklisted: '&cYou cant do that in this world.'
+
+#
+# Exploding spawners
+#
+explode:
+  drop: true
+  # The chance it will drop in percentage from 0-100
+  chance: 100
+  # Configure worlds spawners will not drop when exploded
+  blacklisted-worlds:
+    - 'worldname'
+
+#
+# Mining spawners
+#
+mining:
+  # Whether or not to require the permission "mineablespawners.mine" to mine a spawner.
+  require-permission: true
+  # Whether or not to require the permission "mineablespawners.mine.<type>" to mine a spawner.
+  require-individual-permission: false
+  # Which tools should be used to mine spawners
+  tools:
+    - 'DIAMOND_PICKAXE'
+  # Whether or not to require silk touch to mine a spawner.
+  require-silktouch: true
+  # Should a different of silk touch be required? "required-level" has no effect if "require-silktouch-level" is false.
+  require-silktouch-level: false
+  required-level: 2
+  # The chance it will drop in percentage from 0-100
+  chance: 100
+  # Should we instead use perm based chances?
+  use-perm-based-chances: false
+  # Configure them from best (top) to worse (bottom). Format: <permission>:<% chance from 0-100>
+  perm-based-chances:
+    - 'minechance.1:100' # 100% chance
+    - 'minechance.2:50' # 50% chance
+  # Should the drop go straight to the players inventory?
+  drop-to-inventory: true
+  # Should exp be dropped when mining spawners.
+  drop-exp: false
+  # Should the spawner break (but not drop) if any of the above conditions are not met?
+  still-break: false
+  # Here you can translate the requirements that will be shown when the still break message is sent.
+  requirements:
+    wrong-tool: 'Wrong tool.'
+    permission: 'Not allowed to silk touch spawners.'
+    individual-permission: 'Not allowed to silk touch that type of spawner.'
+    silktouch: 'Missing Silktouch'
+    # Available placeholder: %level% => required level
+    silktouch-level: 'Missing Silktouch level %level%'
+  # Configure worlds players will not be able to change spawners in.
+  blacklisted-worlds:
+    - 'worldname'
+  # Charge players to mine spawners? use type "ALL" to charge the same price for all spawners. Format: <mob>:<price>. Requires the plugin Vault and a compatible economy plugin.
+  charge: false
+  prices:
+    - 'PIG:10000'
+  messages:
+    wrong-tool: '&cYou do not have the tool required.'
+    no-permission: '&cNo Permission.'
+    no-individual-permission: '&cYou do not have permission to mine a spawner of that type.'
+    blacklisted: '&cYou cant do that in this world.'
+    no-silktouch: '&cYou need silktouch to mine this spawner.'
+    # Available placeholder: %level% => required level
+    not-level-required: '&cYou are not the right silk touch level to do this. You must be level %level%'
+    inventory-full: '&cThe targets inventory is full. No spawner has been given.'
+    # Available placeholder: %requirement% => missing requirement
+    still-break: '&cThe spawner you mined did not drop because you failed to meet the following requirement: &f%requirement%&c.'
+    # Available placeholder: %missing% => amount of money missing, %cost% => cost to ppalce spawner.
+    not-enough-money: '&cYou do not have enough to do this. You are missing: $%missing%'
+    # Available placeholders: %type% => type of spawner, %balance% => players balance, %cost% => cost to place spawner.
+    transaction-success: '&eYou have mined a %type% spawner for $%cost%!'
+    # Message sent when players didn't get the spawner because of their odds (chance setting)
+    out-of-luck: '&cYou were out of luck and didn''t drop the spawner.'
+
+#
+# Placing spawners
+#
+placing:
+  # Should the plugin log in console every time a player places a spawner?
+  log: true
+  # Configure worlds players will not be able to place spawners in.
+  blacklisted-worlds:
+    - 'worldname'
+  # Charge players to place spawners? use type "ALL" to charge the same price for all spawners. Format: <mob>:<price>. Requires the plugin Vault and a compatible economy plugin.
+  charge: false
+  prices:
+    - 'PIG:10000'
+  messages:
+    blacklisted: '&cYou cant do that in this world.'
+    # Available placeholder: %missing% => amount of money missing, %cost% => cost to ppalce spawner.
+    not-enough-money: '&cYou do not have enough to do this. You are missing: $%missing%'
+    # Available placeholders: %type% => type of spawner, %balance% => players balance, %cost% => cost to place spawner.
+    transaction-success: '&eYou have mined a %type% spawner for $%cost%!'
