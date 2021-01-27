@@ -3,6 +3,7 @@ package com.dnyferguson.mineablespawners.listeners;
 import com.cryptomorin.xseries.XMaterial;
 import com.dnyferguson.mineablespawners.MineableSpawners;
 import com.dnyferguson.mineablespawners.utils.Chat;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -32,6 +33,8 @@ public class SpawnerMineListener implements Listener {
     private double globalPrice = 0;
     private final DecimalFormat df = new DecimalFormat("##.##");
 
+    private Set<Location> spawnerBreakConfirmation = new HashSet<>();
+
     public SpawnerMineListener(MineableSpawners plugin) {
         this.plugin = plugin;
         for (String line : plugin.getConfigurationHandler().getList("mining", "perm-based-chances")) {
@@ -40,7 +43,8 @@ public class SpawnerMineListener implements Listener {
                 String permission = args[0];
                 double chance = Double.parseDouble(args[1]);
                 permissionChances.put(permission, chance);
-            } catch (Exception ignore) {}
+            } catch (Exception ignore) {
+            }
         }
         for (String line : plugin.getConfigurationHandler().getList("mining", "prices")) {
             try {
@@ -59,7 +63,8 @@ public class SpawnerMineListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSpawnerMine(BlockBreakEvent e) {
         // check if block is spawner
         Block block = e.getBlock();
@@ -158,12 +163,12 @@ public class SpawnerMineListener implements Listener {
         if (plugin.getConfigurationHandler().getBoolean("mining", "use-perm-based-chances") && permissionChances.size() > 0) {
             for (String perm : permissionChances.keySet()) {
                 if (player.hasPermission(perm)) {
-                    dropChance = permissionChances.get(perm)/100;
+                    dropChance = permissionChances.get(perm) / 100;
                     break;
                 }
             }
         } else {
-            dropChance = plugin.getConfigurationHandler().getDouble("mining", "chance")/100;
+            dropChance = plugin.getConfigurationHandler().getDouble("mining", "chance") / 100;
         }
         if (dropChance != 1) {
             double random = Math.random();
@@ -206,6 +211,28 @@ public class SpawnerMineListener implements Listener {
             player.sendMessage(Chat.format(msg));
             return;
         }
+
+        if (plugin.getConfigurationHandler().getBoolean("mining", "break-confirmation")) {
+            Location l = e.getBlock().getLocation();
+            if (spawnerBreakConfirmation.contains(l)) {
+                spawnerBreakConfirmation.remove(l);
+                player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "still-break").replace("%requirement%", reason));
+                return;
+            }
+
+            // cancel first breaking attempt
+            e.setCancelled(true);
+            spawnerBreakConfirmation.add(l);
+            int time = plugin.getConfigurationHandler().getInteger("mining", "break-confirmation-seconds");
+            player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "break-confirmation")
+                    .replace("%time%", time + "").replace("%requirement%", reason));
+
+            Bukkit.getScheduler().runTaskLater(this.plugin, s ->
+                    spawnerBreakConfirmation.remove(l), time * 20
+            );
+            return;
+        }
+
 
         if (msg.length() > 0) {
             player.sendMessage(plugin.getConfigurationHandler().getMessage("mining", "still-break").replace("%requirement%", reason));

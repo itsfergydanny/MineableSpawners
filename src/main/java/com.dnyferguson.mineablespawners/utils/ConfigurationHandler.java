@@ -79,6 +79,7 @@ public class ConfigurationHandler {
         ConfigurationSection section = config.getConfigurationSection("mining");
 
         msgs.put("blacklisted", section.getString("messages.blacklisted"));
+        msgs.put("break-confirmation", section.getString("messages.break-confirmation"));
         msgs.put("no-permission", section.getString("messages.no-permission"));
         msgs.put("no-individual-permission", section.getString("messages.no-individual-permission"));
         msgs.put("wrong-tool", section.getString("messages.wrong-tool"));
@@ -106,11 +107,13 @@ public class ConfigurationHandler {
         bools.put("require-silktouch-level", section.getBoolean("require-silktouch-level"));
         bools.put("drop-to-inventory", section.getBoolean("drop-to-inventory"));
         bools.put("still-break", section.getBoolean("still-break"));
+        bools.put("break-confirmation", section.getBoolean("break-confirmation"));
         bools.put("require-individual-permission", section.getBoolean("require-individual-permission"));
         bools.put("use-perm-based-chances", section.getBoolean("use-perm-based-chances"));
         bools.put("charge", section.getBoolean("charge"));
 
         ints.put("required-level", section.getInt("required-level"));
+        ints.put("break-confirmation-seconds", section.getInt("break-confirmation-seconds"));
 
         dbls.put("chance", section.getDouble("chance"));
 
