@@ -59,8 +59,12 @@ public class SpawnerMineListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.MONITOR)
     public void onSpawnerMine(BlockBreakEvent e) {
+        if (e.isCancelled()) {
+            return;
+        }
+
         // check if block is spawner
         Block block = e.getBlock();
         Material material = block.getType();
