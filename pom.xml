@@ -6,7 +6,7 @@
 
     <groupId>com.dnyferguson</groupId>
     <artifactId>MineableSpawners</artifactId>
-    <version>3.0.11</version>
+    <version>3.1.0</version>
     <packaging>jar</packaging>
 
     <name>MineableSpawners</name>
@@ -19,6 +19,13 @@
     <description>A simplistic silk spawner plugin</description>
     <url>https://dnyferguson.com/</url>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>apache.snapshots</id>
+            <url>https://repository.apache.org/snapshots/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
     <build>
         <defaultGoal>clean package</defaultGoal>
         <plugins>
@@ -27,14 +34,14 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.3.0-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -50,7 +57,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.3.0-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>shade</id>
@@ -112,12 +119,12 @@
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>7.2.0</version>
+            <version>8.1.0</version>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>2.6.0</version>
+            <version>2.8.0</version>
         </dependency>
     </dependencies>
 </project>
