@@ -6,6 +6,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -323,7 +324,10 @@ public class ConfigurationHandler {
     }
 
     public List<String> getList(String section, String key) {
-        return lists.get(section).get(key);
+        if (lists.containsKey(section) && lists.get(section).containsKey(key)) {
+            return lists.get(section).get(key);
+        }
+        return new ArrayList<>();
     }
 
     public String getMessage(String section, String key) {
@@ -343,6 +347,13 @@ public class ConfigurationHandler {
 
     public double getDouble(String section, String key) {
         return doubles.get(section).get(key);
+    }
+
+    public double getDoubleOrDefault(String section, String key, double d) {
+        if (doubles.containsKey(section) && doubles.get(section).containsKey(key)) {
+            return doubles.get(section).get(key);
+        }
+        return d;
     }
 
     public int getInteger(String section, String key) {
