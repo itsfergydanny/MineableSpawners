@@ -41,7 +41,7 @@ public class SpawnerPlaceListener implements Listener {
                 double price = Double.parseDouble(args[1]);
                 prices.put(type, price);
             } catch (Exception ignore) {
-                System.out.println("[MineableSpawners] Error with placing price \"" + line + "\"");
+                plugin.getLogger().info("Error with placing price \"" + line + "\"");
             }
         }
     }
@@ -106,7 +106,7 @@ public class SpawnerPlaceListener implements Listener {
 
         if (plugin.getConfigurationHandler().getBoolean("placing", "log")) {
             Location loc = block.getLocation();
-            System.out.println("[MineableSpawners] Player " + player.getName() + " placed a " + type.name().toLowerCase() + " spawner at x:" + loc.getX() + ", y:" + loc.getY() + ", z:" + loc.getZ() + " (" + loc.getWorld().getName() + ")");
+            plugin.getLogger().info("Player " + player.getName() + " placed a " + type.name().toLowerCase() + " spawner at x:" + loc.getX() + ", y:" + loc.getY() + ", z:" + loc.getZ() + " (" + loc.getWorld().getName() + ")");
         }
 
         if (cost > 0) {
