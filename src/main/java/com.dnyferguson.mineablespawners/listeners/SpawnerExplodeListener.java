@@ -29,6 +29,10 @@ public class SpawnerExplodeListener implements Listener {
             return;
         }
 
+        if (e.getLocation().getWorld() != null && plugin.getConfigurationHandler().getList("explode", "blacklisted-worlds").contains(e.getLocation().getWorld().getName())) {
+            return;
+        }
+
         for (Block block : e.blockList()) {
             if (!block.getType().equals(XMaterial.SPAWNER.parseMaterial())) {
                 continue;
@@ -49,22 +53,26 @@ public class SpawnerExplodeListener implements Listener {
             ItemMeta meta = item.getItemMeta();
             String mobFormatted = Chat.uppercaseStartingLetters(spawner.getSpawnedType().toString());
 
-            meta.setDisplayName(plugin.getConfigurationHandler().getMessage("global", "name").replace("%mob%", mobFormatted));
-            List<String> newLore = new ArrayList<>();
-            if (plugin.getConfigurationHandler().getList("global", "lore") != null && plugin.getConfigurationHandler().getBoolean("global", "lore-enabled")) {
-                for (String line : plugin.getConfigurationHandler().getList("global", "lore")) {
-                    newLore.add(Chat.format(line).replace("%mob%", mobFormatted));
+            if (meta != null) {
+                meta.setDisplayName(plugin.getConfigurationHandler().getMessage("global", "name").replace("%mob%", mobFormatted));
+                List<String> newLore = new ArrayList<>();
+                if (plugin.getConfigurationHandler().getList("global", "lore") != null && plugin.getConfigurationHandler().getBoolean("global", "lore-enabled")) {
+                    for (String line : plugin.getConfigurationHandler().getList("global", "lore")) {
+                        newLore.add(Chat.format(line).replace("%mob%", mobFormatted));
+                    }
+                    meta.setLore(newLore);
                 }
-                meta.setLore(newLore);
+                item.setItemMeta(meta);
             }
-            item.setItemMeta(meta);
 
             NBTItem nbti = new NBTItem(item);
             nbti.setString("ms_mob", spawner.getSpawnedType().name());
 
             item = nbti.getItem();
 
-            block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+            if (block.getLocation().getWorld() != null) {
+                block.getLocation().getWorld().dropItemNaturally(block.getLocation(), item);
+            }
         }
     }
 }
