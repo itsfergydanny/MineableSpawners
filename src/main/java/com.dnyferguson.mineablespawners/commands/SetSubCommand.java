@@ -22,7 +22,7 @@ public class SetSubCommand {
 
     public void execute(MineableSpawners plugin, CommandSender sender, String type) {
         if (!(sender instanceof Player)) {
-            System.out.println("[MineableSpawners] Only players can run this command!");
+            plugin.getLogger().info("Only players can run this command!");
             return;
         }
 
