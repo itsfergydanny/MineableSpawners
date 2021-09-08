@@ -35,6 +35,7 @@ public final class MineableSpawners extends JavaPlugin {
         pm.registerEvents(new EggChangeListener(this), this);
         pm.registerEvents(new AnvilRenameListener(this), this);
         pm.registerEvents(new SpawnerExplodeListener(this), this);
+        pm.registerEvents(new WitherBreakSpawnerListener(this), this);
 
         if (getConfigurationHandler().getBoolean("global", "show-available")) {
             StringBuilder str = new StringBuilder("[MineableSpawners] Available mob types: \n");

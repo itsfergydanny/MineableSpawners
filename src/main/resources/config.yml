@@ -122,6 +122,17 @@ explode:
     - 'worldname'
 
 #
+# Spawners destroyed by withers
+#
+wither:
+  drop: false
+  # The chance it will drop in percentage from 0-100
+  chance: 100
+  # Configure worlds spawners will not drop when exploded
+  blacklisted-worlds:
+    - 'worldname'
+
+#
 # Mining spawners
 #
 mining:
