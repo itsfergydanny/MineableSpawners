@@ -34,7 +34,7 @@ public class WitherBreakSpawnerListener implements Listener {
             return;
         }
 
-        if (!plugin.getConfigurationHandler().getBoolean("wither", "drop")) {
+        if (!plugin.getConfigurationHandler().getBooleanOrDefault("wither", "drop", false)) {
             return;
         }
 
@@ -44,7 +44,7 @@ public class WitherBreakSpawnerListener implements Listener {
             return;
         }
 
-        double dropChance = plugin.getConfigurationHandler().getDouble("wither", "chance")/100;
+        double dropChance = plugin.getConfigurationHandler().getDoubleOrDefault("wither", "chance", 100)/100;
 
         if (dropChance != 1) {
             double random = Math.random();
