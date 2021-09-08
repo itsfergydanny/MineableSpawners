@@ -24,7 +24,7 @@ public final class MineableSpawners extends JavaPlugin {
         configurationHandler = new ConfigurationHandler(this);
 
         if (!setupEconomy()) {
-            System.out.println("[MineableSpawners] vault not found, economy features disabled.");
+            getLogger().info("vault not found, economy features disabled.");
         }
 
         getCommand("mineablespawners").setExecutor(new MineableSpawnersCommand(this));
@@ -35,15 +35,16 @@ public final class MineableSpawners extends JavaPlugin {
         pm.registerEvents(new EggChangeListener(this), this);
         pm.registerEvents(new AnvilRenameListener(this), this);
         pm.registerEvents(new SpawnerExplodeListener(this), this);
+        pm.registerEvents(new WitherBreakSpawnerListener(this), this);
 
         if (getConfigurationHandler().getBoolean("global", "show-available")) {
-            StringBuilder str = new StringBuilder("[MineableSpawners] Available mob types: \n");
+            StringBuilder str = new StringBuilder("Available mob types: \n");
             for (EntityType type : EntityType.values()) {
                 str.append("- ");
                 str.append(type.name());
                 str.append("\n");
             }
-            System.out.println(str.toString());
+            getLogger().info(str.toString());
         }
 
         api = new API(this);

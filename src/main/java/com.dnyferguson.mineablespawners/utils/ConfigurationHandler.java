@@ -46,6 +46,7 @@ public class ConfigurationHandler {
         explodeSection(config);
         miningSection(config);
         placingSection(config);
+        witherSection(config);
     }
 
     private void placingSection(FileConfiguration config) {
@@ -139,6 +140,26 @@ public class ConfigurationHandler {
         booleans.put("explode", bools);
         doubles.put("explode", dbls);
         lists.put("explode", lsts);
+    }
+
+    private void witherSection(FileConfiguration config) {
+        Map<String, String> msgs = new HashMap<>();
+        Map<String, Boolean> bools = new HashMap<>();
+        Map<String, Double> dbls = new HashMap<>();
+        Map<String, List<String>> lsts = new HashMap<>();
+
+        ConfigurationSection section = config.getConfigurationSection("wither");
+
+        bools.put("drop", section.getBoolean("drop", false));
+
+        dbls.put("chance", section.getDouble("chance", 100));
+
+        lsts.put("blacklisted-worlds", section.getStringList("blacklisted-worlds"));
+
+        messages.put("wither", msgs);
+        booleans.put("wither", bools);
+        doubles.put("wither", dbls);
+        lists.put("wither", lsts);
     }
 
     private void eggsSection(FileConfiguration config) {
