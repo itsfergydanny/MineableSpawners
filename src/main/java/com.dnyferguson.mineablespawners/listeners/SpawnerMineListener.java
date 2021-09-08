@@ -54,7 +54,7 @@ public class SpawnerMineListener implements Listener {
                 double price = Double.parseDouble(args[1]);
                 prices.put(type, price);
             } catch (Exception ignore) {
-                System.out.println("[MineableSpawners] Error with mining price \"" + line + "\"");
+                plugin.getLogger().info("Error with mining price \"" + line + "\"");
             }
         }
     }
