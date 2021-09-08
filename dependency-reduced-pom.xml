@@ -4,7 +4,7 @@
   <groupId>com.dnyferguson</groupId>
   <artifactId>MineableSpawners</artifactId>
   <name>MineableSpawners</name>
-  <version>3.1.0</version>
+  <version>3.1.1</version>
   <description>A simplistic silk spawner plugin</description>
   <url>https://dnyferguson.com/</url>
   <build>
@@ -17,21 +17,6 @@
           <source>16</source>
           <target>16</target>
         </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.3.0-SNAPSHOT</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>

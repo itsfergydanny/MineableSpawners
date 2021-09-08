@@ -34,8 +34,6 @@ public class WitherBreakSpawnerListener implements Listener {
             return;
         }
 
-        System.out.println("WITHER BREAK SPAWNER");
-
         if (!plugin.getConfigurationHandler().getBoolean("wither", "drop")) {
             return;
         }
