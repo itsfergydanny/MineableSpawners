@@ -4,7 +4,7 @@
   <groupId>com.dnyferguson</groupId>
   <artifactId>MineableSpawners</artifactId>
   <name>MineableSpawners</name>
-  <version>3.1.1</version>
+  <version>3.1.2</version>
   <description>A simplistic silk spawner plugin</description>
   <url>https://dnyferguson.com/</url>
   <build>
