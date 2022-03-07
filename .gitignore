@@ -24,6 +24,7 @@ tomcat
 
 # Maven 
 target/
+dependency-reduced-pom.xml
 
 # IntelliJ project files 
 *.iml
