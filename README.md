@@ -1,3 +1,8 @@
+<p>
+  <img src="https://img.shields.io/bstats/players/7354">
+  <img src="https://img.shields.io/bstats/servers/7354">
+</p>
+
 # MineableSpawners
 This plugin allows players to mine and drop spawners, receive them via command and more!​
 
