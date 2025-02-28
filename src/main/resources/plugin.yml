@@ -1,9 +1,9 @@
 name: MineableSpawners
-version: 3.1.5
+version: 3.1.6
 main: com.dnyferguson.mineablespawners.MineableSpawners
 authors: [fergydanny]
 description: A simplistic silk spawner plugin
-website: https://dnyferguson.com
+website: https://www.spigotmc.org/members/fergydanny.25236/
 softdepend: [Vault]
 api-version: 1.13
 commands:
